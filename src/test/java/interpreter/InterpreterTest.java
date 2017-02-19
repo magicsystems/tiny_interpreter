@@ -32,12 +32,9 @@ public class InterpreterTest {
         runProgram(HELLO_WORLD, Arrays.asList("Hello World!"));
     }
 
+
     private static final String PRINT_SEQUENCE =
             "var sequence = map({1, 4}, i -> (-1)^(i+1))\n" +
-                    "out sequence";
-
-    private static final String PRINT_SEQUENCE_VARIABLE =
-            "var sequence = {1,4}\n" +
                     "out sequence";
 
     @Test
@@ -45,10 +42,16 @@ public class InterpreterTest {
         runProgram(PRINT_SEQUENCE, Arrays.asList("{1.0, -1.0, 1.0, -1.0}"));
     }
 
+
+    private static final String PRINT_SEQUENCE_VARIABLE =
+            "var sequence = {1,4}\n" +
+                    "out sequence";
+
     @Test
     public void testPrintSequenceVariable() {
         runProgram(PRINT_SEQUENCE_VARIABLE, Arrays.asList("{1.0, 2.0, 3.0, 4.0}"));
     }
+
 
     private static final String INVALID_TYPE_REDUCE_PROGRAM =
             "var n = 5\n" +
@@ -63,6 +66,7 @@ public class InterpreterTest {
                 "Undefined variable 'val'");
     }
 
+
     private static final String INVALID_TYPE_MAP_PROGRAM =
             "var n = {1,5}\n" +
                     "var red = reduce(n, 0, x y -> x + y)\n" +
@@ -73,6 +77,7 @@ public class InterpreterTest {
         runProgramWithError(INVALID_TYPE_MAP_PROGRAM,
                 "Incompatible type error. Sequence is required, but got " + "'red'");
     }
+
 
     private static final String TWO_REDUCE_OPERATION_PROGRAM =
             "var m = map({1,7}, x -> x/2)\n" +
@@ -86,6 +91,7 @@ public class InterpreterTest {
         runProgram(TWO_REDUCE_OPERATION_PROGRAM, Arrays.asList("14.0", "39.375"));
     }
 
+
     private static final String DUPLICATE_IDENTIFIERS_PROGRAM =
             "var m = map({1,7}, x -> x/2)\n" +
                     "var m = reduce(m, 0, x y -> x + y)\n";
@@ -94,6 +100,7 @@ public class InterpreterTest {
     public void testDuplicate() {
         runProgramWithError(DUPLICATE_IDENTIFIERS_PROGRAM, "Variable 'm' already defined in the current context");
     }
+
 
     private static void runProgram(String program, List<String> output) {
         Interpreter interpreter = new Interpreter();
