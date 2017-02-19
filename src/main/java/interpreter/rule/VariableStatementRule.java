@@ -28,7 +28,7 @@ public class VariableStatementRule implements Rule {
         String newLine = line.substring(START.length(), line.length());
         String[] args = newLine.split("=");
         if (args.length == 2) {
-            Identifier identifier = parser.parseIdentifier(context, args[0]);
+            Identifier identifier = parser.parseVariable(context, args[0]);
             Expression expression = parser.expression(context, args[1]);
             return new VariableStatement(expression, identifier.getName());
         } else {

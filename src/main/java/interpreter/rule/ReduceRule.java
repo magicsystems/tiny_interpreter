@@ -31,30 +31,33 @@ public class ReduceRule implements Rule {
     public Expression parse(Parser parser, String line, Context context) {
         String args = line.substring(START.length(), line.length() - 1);
         int firstPosition = 0;
+        Context localContext = new Context(context);
         while ((firstPosition = args.indexOf(",", firstPosition + 1)) != -1) {
-            context.clearExceptions();
+            localContext.clearExceptions();
             String newLine = args.substring(0, firstPosition);
-            SequenceExpression sequence = parser.sequenceExpression(context, newLine);
-            if (!context.hasException()) {
+            SequenceExpression sequence = parser.sequenceExpression(localContext, newLine);
+            if (!localContext.hasException()) {
                 int secondPosition = firstPosition;
                 while ((secondPosition = args.indexOf(",", secondPosition + 1)) != -1) {
-                    context.clearExceptions();
+                    localContext.clearExceptions();
                     newLine = args.substring(firstPosition + 1, secondPosition);
-                    Expression expression = parser.expression(context, newLine);
-                    if (!context.hasException()) {
+                    Expression expression = parser.expression(localContext, newLine);
+                    if (!localContext.hasException()) {
                         newLine = args.substring(secondPosition + 1, args.length());
-                        TwoArgsLambda lambda = parser.parseTwoArgsLambda(context, newLine);
-                        if (!context.hasException()) {
+                        TwoArgsLambda lambda = parser.parseTwoArgsLambda(localContext, newLine);
+                        if (!localContext.hasException()) {
                             return new ReduceExpression(sequence, expression,
                                     lambda.getFirstIdentifier(), lambda.getSecondIdentifier(), lambda.getException());
                         }
                     }
                 }
-            } else if (context.hasIncompatibleParseError()) {
+            } else if (localContext.hasIncompatibleParseError()) {
                 firstPosition = args.length();
             }
         }
-        if (!context.hasException()) {
+        if(localContext.hasException()) {
+            context.addException(localContext.getExceptions().get(0));
+        } else {
             context.addException(new ParserError("Invalid syntax for reduce function '" + line + "'"));
         }
         return emptyExpression();

@@ -15,7 +15,7 @@ public class OneArgLambdaParser {
     public OneArgLambda parse(Parser parser, Context context, String line) {
         String[] args = line.split("->");
         if (args.length == 2) {
-            Identifier identifier = parser.parseIdentifier(context, args[0]);
+            Identifier identifier = parser.parseLambdaIdentifier(context, args[0]);
             Context localContext = new Context();
             localContext.putNumericVariable(identifier.getName(), 1.0);
             Expression expression = parser.expression(localContext, args[1]);

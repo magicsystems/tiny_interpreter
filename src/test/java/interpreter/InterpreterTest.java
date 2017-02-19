@@ -48,6 +48,10 @@ public class InterpreterTest {
                     "out sum\n" +
                     "out mult\n";
 
+    private static final String DUPLICATE_IDENTIFIERS_PROGRAM =
+            "var m = map({1,7}, x -> x/2)\n" +
+                    "var m = reduce(m, 0, x y -> x + y)\n";
+
     @Test
     public void testInterpretation() {
         runProgram(PROGRAM_ONE, Arrays.asList("val = ", "67.0"));
@@ -96,6 +100,14 @@ public class InterpreterTest {
         Result result = interpreter.execute(TWO_REDUCE_PROGRAM);
         assertThat(result.getExceptionList(), empty());
         assertThat(result.getOutput(), equalTo(Arrays.asList("14.0","39.375")));
+    }
+
+    @Test
+    public void testDuplicate() {
+        Interpreter interpreter = new Interpreter();
+        Result result = interpreter.execute(DUPLICATE_IDENTIFIERS_PROGRAM);
+        assertThat(result.getExceptionList(), hasSize(1));
+        assertThat(result.getExceptionList().get(0).getMessage(), equalTo("Variable 'm' already defined in the current context"));
     }
 
     private static void runProgram(String program, List<String> output) {

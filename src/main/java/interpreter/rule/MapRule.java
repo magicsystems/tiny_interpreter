@@ -28,21 +28,24 @@ public class MapRule implements Rule {
     public Expression parse(Parser parser, String line, Context context) {
         String args = line.substring(START.length(), line.length() - END.length());
         int position = 0;
+        Context localContext = new Context(context);
         while ((position = args.indexOf(",", position + 1)) != -1) {
-            context.clearExceptions();
+            localContext.clearExceptions();
             String newLine = args.substring(0, position);
-            SequenceExpression sequence = parser.sequenceExpression(context, newLine);
-            if (!context.hasException()) {
+            SequenceExpression sequence = parser.sequenceExpression(localContext, newLine);
+            if (!localContext.hasException()) {
                 newLine = args.substring(position + 1, args.length());
-                OneArgLambda lambda = parser.parseOneArgLambda(context, newLine);
-                if (!context.hasException()) {
+                OneArgLambda lambda = parser.parseOneArgLambda(localContext, newLine);
+                if (!localContext.hasException()) {
                     return new MapExpression(sequence, lambda.getIdentifier(), lambda.getExpression());
                 }
-            } else if (context.hasIncompatibleParseError()) {
+            } else if (localContext.hasIncompatibleParseError()) {
                 position = args.length();
             }
         }
-        if (!context.hasException()) {
+        if(localContext.hasException()) {
+            context.addException(localContext.getExceptions().get(0));
+        } else {
             context.addException(new ParserError("Invalid syntax for map function '" + line + "'"));
         }
         return emptyExpression();

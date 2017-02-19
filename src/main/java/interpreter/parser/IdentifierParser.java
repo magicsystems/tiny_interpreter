@@ -13,7 +13,22 @@ public class IdentifierParser {
         if (!keyword(line)) {
             return new Identifier(line);
         }
-        context.addException(new ParserError("Invalid identifier '" + line + "'"));
+        return errorResponse(context, "Invalid identifier '" + line + "'");
+    }
+
+    public Identifier parseVariable(String line, Context context) {
+        if (!keyword(line)) {
+            if (context.hasNumericVariable(line) || context.hasSequence(line)) {
+                return errorResponse(context, "Variable '" + line + "' already defined in the current context");
+            } else {
+                return new Identifier(line);
+            }
+        }
+        return errorResponse(context, "Invalid identifier '" + line + "'");
+    }
+
+    private static Identifier errorResponse(Context context, String error) {
+        context.addException(new ParserError(error));
         return new Identifier("empty");
     }
 }

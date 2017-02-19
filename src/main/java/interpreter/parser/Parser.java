@@ -83,9 +83,14 @@ public class Parser {
         return twoArgsLambdaParser.parse(this, context, trimmedLine);
     }
 
-    public Identifier parseIdentifier(Context context, String line) {
+    public Identifier parseLambdaIdentifier(Context context, String line) {
         String trimmedLine = line.trim();
         return identifierParser.parseLambdaParameter(trimmedLine, context);
+    }
+
+    public Identifier parseVariable(Context context, String line) {
+        String trimmedLine = line.trim();
+        return identifierParser.parseVariable(trimmedLine, context);
     }
 
     private <T> T typedExpression(Context context, String line,

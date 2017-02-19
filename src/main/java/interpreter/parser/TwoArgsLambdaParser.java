@@ -18,8 +18,8 @@ public class TwoArgsLambdaParser {
             String identifierStr = args[0].trim();
             String identifiers[] = identifierStr.split(" ");
             if (identifiers.length == 2) {
-                Identifier identifier1 = parser.parseIdentifier(context, identifiers[0]);
-                Identifier identifier2 = parser.parseIdentifier(context, identifiers[1]);
+                Identifier identifier1 = parser.parseLambdaIdentifier(context, identifiers[0]);
+                Identifier identifier2 = parser.parseLambdaIdentifier(context, identifiers[1]);
                 Context localContext = new Context();
                 localContext.putNumericVariable(identifier1.getName(), 1.0);
                 localContext.putNumericVariable(identifier2.getName(), 1.0);

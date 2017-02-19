@@ -16,6 +16,15 @@ public class Context {
     private List<ParserError> exceptions = new ArrayList<>();
     private List<String> output = new ArrayList<>();
 
+    public Context(Context context) {
+        this.variables.putAll(context.getVariables());
+        this.sequences.putAll(context.getSequences());
+    }
+
+    public Context() {
+
+    }
+
     public double getValue(String name) {
         return variables.get(name);
     }
@@ -66,5 +75,13 @@ public class Context {
 
     public List<String> getOutput() {
         return output;
+    }
+
+    public Map<String, Double> getVariables() {
+        return variables;
+    }
+
+    public Map<String, SequenceExpression> getSequences() {
+        return sequences;
     }
 }
