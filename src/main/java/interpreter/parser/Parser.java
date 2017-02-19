@@ -53,42 +53,35 @@ public class Parser {
     private final TwoArgsLambdaParser twoArgsLambdaParser = new TwoArgsLambdaParser();
     private final IdentifierParser identifierParser = new IdentifierParser();
 
-    public Expression expression(Context context,
-                                 String line) {
+    public Expression expression(Context context, String line) {
         return parse(expressionRules, context, line, Util::emptyExpression, "expression");
     }
 
-    public Statement statement(Context context,
-                               String line) {
+    public Statement statement(Context context, String line) {
         return parse(statementRules, context, line, Util::emptyStatement, "statement");
     }
 
-    public NumberExpression numberExpression(Context context,
-                                             String line) {
+    public NumberExpression numberExpression(Context context, String line) {
         return typedExpression(context, line, NumberExpression.class,
                 Util::emptyNumberExpression, "Number");
     }
 
-    public SequenceExpression sequenceExpression(Context context,
-                                                 String line) {
+    public SequenceExpression sequenceExpression(Context context, String line) {
         return typedExpression(context, line, SequenceExpression.class,
                 Util::emptySequence, "Sequence");
     }
 
-    public OneArgLambda parseOneArgLambda(Context context,
-                                          String line) {
+    public OneArgLambda parseOneArgLambda(Context context, String line) {
         String trimmedLine = line.trim();
         return oneArgLambdaParser.parse(this, context, trimmedLine);
     }
 
-    public TwoArgsLambda parseTwoArgsLambda(Context context,
-                                            String line) {
+    public TwoArgsLambda parseTwoArgsLambda(Context context, String line) {
         String trimmedLine = line.trim();
         return twoArgsLambdaParser.parse(this, context, trimmedLine);
     }
 
-    public Identifier parseIdentifier(Context context,
-                                      String line) {
+    public Identifier parseIdentifier(Context context, String line) {
         String trimmedLine = line.trim();
         return identifierParser.parseLambdaParameter(trimmedLine, context);
     }
