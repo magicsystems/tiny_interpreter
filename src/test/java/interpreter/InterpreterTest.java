@@ -42,7 +42,7 @@ public class InterpreterTest {
 
 
     private static final String TWO_REDUCE_PROGRAM =
-                    "var m = map({1,7}, x -> x/2)\n" +
+            "var m = map({1,7}, x -> x/2)\n" +
                     "var sum = reduce(m, 0, x y -> x + y)\n" +
                     "var mult = reduce(m, 1, x y -> x * y)\n" +
                     "out sum\n" +
@@ -74,40 +74,25 @@ public class InterpreterTest {
 
     @Test
     public void testInvalidTypeReduceProgram() {
-        Interpreter interpreter = new Interpreter();
-        Result result = interpreter.execute(INVALID_TYPE_REDUCE_PROGRAM);
-        assertThat(result.getExceptionList(), hasSize(2));
-
-        assertThat(result.getExceptionList().get(0).getMessage(),
-                equalTo("Incompatible type error. Sequence is required, but got 'n'"));
-        assertThat(result.getExceptionList().get(1).getMessage(),
-                equalTo("Undefined variable 'val'"));
+        runProgramWithError(INVALID_TYPE_REDUCE_PROGRAM,
+                "Incompatible type error. Sequence is required, but got 'n'",
+                "Undefined variable 'val'");
     }
 
     @Test
     public void testInvalidTypeMapProgram() {
-        Interpreter interpreter = new Interpreter();
-        Result result = interpreter.execute(INVALID_TYPE_MAP_PROGRAM);
-        assertThat(result.getExceptionList(), hasSize(1));
-
-        assertThat(result.getExceptionList().get(0).getMessage(),
-                equalTo("Incompatible type error. Sequence is required, but got 'red'"));
+        runProgramWithError(INVALID_TYPE_MAP_PROGRAM,
+                "Incompatible type error. Sequence is required, but got " + "'red'");
     }
 
     @Test
     public void testTwoReduce() {
-        Interpreter interpreter = new Interpreter();
-        Result result = interpreter.execute(TWO_REDUCE_PROGRAM);
-        assertThat(result.getExceptionList(), empty());
-        assertThat(result.getOutput(), equalTo(Arrays.asList("14.0","39.375")));
+        runProgram(TWO_REDUCE_PROGRAM, Arrays.asList("14.0", "39.375"));
     }
 
     @Test
     public void testDuplicate() {
-        Interpreter interpreter = new Interpreter();
-        Result result = interpreter.execute(DUPLICATE_IDENTIFIERS_PROGRAM);
-        assertThat(result.getExceptionList(), hasSize(1));
-        assertThat(result.getExceptionList().get(0).getMessage(), equalTo("Variable 'm' already defined in the current context"));
+        runProgramWithError(DUPLICATE_IDENTIFIERS_PROGRAM, "Variable 'm' already defined in the current context");
     }
 
     private static void runProgram(String program, List<String> output) {
@@ -115,5 +100,15 @@ public class InterpreterTest {
         Result result = interpreter.execute(program);
         assertThat(result.getExceptionList(), empty());
         assertThat(result.getOutput(), equalTo(output));
+    }
+
+    private static void runProgramWithError(String program, String... errors) {
+        Interpreter interpreter = new Interpreter();
+        Result result = interpreter.execute(program);
+        assertThat(result.getExceptionList(), hasSize(errors.length));
+        for (int i = 0; i < errors.length; i++) {
+            assertThat(result.getExceptionList().get(i).getMessage(),
+                    equalTo(errors[i]));
+        }
     }
 }
