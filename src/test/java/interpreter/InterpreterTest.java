@@ -40,6 +40,14 @@ public class InterpreterTest {
                     "var red = reduce(n, 0, x y -> x + y)\n" +
                     "var val = map(red, y -> 3 + y)\n";
 
+
+    private static final String TWO_REDUCE_PROGRAM =
+                    "var m = map({1,7}, x -> x/2)\n" +
+                    "var sum = reduce(m, 0, x y -> x + y)\n" +
+                    "var mult = reduce(m, 1, x y -> x * y)\n" +
+                    "out sum\n" +
+                    "out mult\n";
+
     @Test
     public void testInterpretation() {
         runProgram(PROGRAM_ONE, Arrays.asList("val = ", "67.0"));
@@ -80,6 +88,14 @@ public class InterpreterTest {
 
         assertThat(result.getExceptionList().get(0).getMessage(),
                 equalTo("Incompatible type error. Sequence is required, but got 'red'"));
+    }
+
+    @Test
+    public void testTwoReduce() {
+        Interpreter interpreter = new Interpreter();
+        Result result = interpreter.execute(TWO_REDUCE_PROGRAM);
+        assertThat(result.getExceptionList(), empty());
+        assertThat(result.getOutput(), equalTo(Arrays.asList("14.0","39.375")));
     }
 
     private static void runProgram(String program, List<String> output) {

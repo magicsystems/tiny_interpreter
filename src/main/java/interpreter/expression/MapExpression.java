@@ -40,6 +40,7 @@ public class MapExpression implements SequenceExpression {
 
     @Override
     public void clear() {
+        sequence.clear();
         result = null;
     }
 
