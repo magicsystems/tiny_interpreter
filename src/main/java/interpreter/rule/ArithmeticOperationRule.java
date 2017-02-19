@@ -6,7 +6,7 @@ import interpreter.expression.Expression;
 import interpreter.expression.NumberExpression;
 import interpreter.expression.Operation;
 import interpreter.parser.Parser;
-import interpreter.parser.ParserError;
+import interpreter.error.ParserError;
 
 import static interpreter.Util.emptyExpression;
 

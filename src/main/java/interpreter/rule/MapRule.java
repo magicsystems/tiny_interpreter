@@ -6,7 +6,7 @@ import interpreter.expression.MapExpression;
 import interpreter.expression.SequenceExpression;
 import interpreter.parser.OneArgLambda;
 import interpreter.parser.Parser;
-import interpreter.parser.ParserError;
+import interpreter.error.ParserError;
 
 import static interpreter.Util.emptyExpression;
 
@@ -38,6 +38,8 @@ public class MapRule implements Rule {
                 if (!context.hasException()) {
                     return new MapExpression(sequence, lambda.getIdentifier(), lambda.getExpression());
                 }
+            } else if (context.hasIncompatibleParseError()) {
+                position = args.length();
             }
         }
         if (!context.hasException()) {

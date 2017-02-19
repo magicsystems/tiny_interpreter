@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.junit.Assert.assertThat;
 
@@ -28,6 +29,16 @@ public class InterpreterTest {
             "var sequence = {1,4}\n" +
                     "out sequence";
 
+    private static final String INVALID_TYPE_REDUCE_PROGRAM =
+            "var n = 5\n" +
+                    "var val = reduce(n, 0, x y -> x + y)\n" +
+                    "print \"val = \"\n" +
+                    "out val";
+
+    private static final String INVALID_TYPE_MAP_PROGRAM =
+            "var n = {1,5}\n" +
+                    "var red = reduce(n, 0, x y -> x + y)\n" +
+                    "var val = map(red, y -> 3 + y)\n";
 
     @Test
     public void testInterpretation() {
@@ -47,6 +58,28 @@ public class InterpreterTest {
     @Test
     public void testPrintSequenceVariable() {
         runProgram(PRINT_SEQUENCE_VARIABLE, Arrays.asList("{1.0, 2.0, 3.0, 4.0}"));
+    }
+
+    @Test
+    public void testInvalidTypeReduceProgram() {
+        Interpreter interpreter = new Interpreter();
+        Result result = interpreter.execute(INVALID_TYPE_REDUCE_PROGRAM);
+        assertThat(result.getExceptionList(), hasSize(2));
+
+        assertThat(result.getExceptionList().get(0).getMessage(),
+                equalTo("Incompatible type error. Sequence is required, but got 'n'"));
+        assertThat(result.getExceptionList().get(1).getMessage(),
+                equalTo("Undefined variable 'val'"));
+    }
+
+    @Test
+    public void testInvalidTypeMapProgram() {
+        Interpreter interpreter = new Interpreter();
+        Result result = interpreter.execute(INVALID_TYPE_MAP_PROGRAM);
+        assertThat(result.getExceptionList(), hasSize(1));
+
+        assertThat(result.getExceptionList().get(0).getMessage(),
+                equalTo("Incompatible type error. Sequence is required, but got 'red'"));
     }
 
     private static void runProgram(String program, List<String> output) {

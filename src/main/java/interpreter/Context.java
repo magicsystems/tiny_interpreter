@@ -1,8 +1,9 @@
 package interpreter;
 
 
+import interpreter.error.IncompatibleTypeError;
 import interpreter.expression.SequenceExpression;
-import interpreter.parser.ParserError;
+import interpreter.error.ParserError;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,6 +42,10 @@ public class Context {
 
     public boolean hasException() {
         return !exceptions.isEmpty();
+    }
+
+    public boolean hasIncompatibleParseError() {
+        return !exceptions.isEmpty() && exceptions.get(0) instanceof IncompatibleTypeError;
     }
 
     public void clearExceptions() {

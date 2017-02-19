@@ -1,7 +1,7 @@
 package interpreter;
 
 
-import interpreter.parser.ParserError;
+import interpreter.error.ParserError;
 
 import java.util.List;
 

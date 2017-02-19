@@ -18,7 +18,7 @@ public class ParserErrorTest {
         assertThat(context.hasException(), equalTo(true));
         assertThat(context.getExceptions(), hasSize(1));
         assertThat(context.getExceptions().get(0).getMessage(),
-                equalTo("Incompatible type exception. Number is required, but got {1.0, 3.0}"));
+                equalTo("Incompatible type error. Number is required, but got '{1.0, 3.0}'"));
     }
 
     @Test
@@ -40,7 +40,7 @@ public class ParserErrorTest {
         assertThat(context.hasException(), equalTo(true));
         assertThat(context.getExceptions(), hasSize(1));
         assertThat(context.getExceptions().get(0).getMessage(),
-                equalTo("Incompatible type exception. Sequence is required, but got reduce({1.0, 4.0}, 1.0, (x, y) ->(x * y))"));
+                equalTo("Incompatible type error. Sequence is required, but got 'reduce({1.0, 4.0}, 1.0, (x, y) ->(x * y))'"));
     }
 
     @Test

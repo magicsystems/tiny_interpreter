@@ -2,6 +2,8 @@ package interpreter.parser;
 
 
 import interpreter.Context;
+import interpreter.error.IncompatibleTypeError;
+import interpreter.error.ParserError;
 import interpreter.statement.Statement;
 import interpreter.expression.Expression;
 import interpreter.expression.Identifier;
@@ -93,8 +95,8 @@ public class Parser {
             if (type.isAssignableFrom(expression.getClass())) {
                 return (T) expression;
             } else {
-                context.addException(new ParserError("Incompatible type exception. " +
-                        requiredType + " is required, but got " + expression.toString()));
+                context.addException(new IncompatibleTypeError("Incompatible type error. " +
+                        requiredType + " is required, but got '" + expression.toString() + "'"));
             }
         }
         return empty.get();

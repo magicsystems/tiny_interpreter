@@ -6,7 +6,7 @@ import interpreter.expression.Expression;
 import interpreter.expression.ReduceExpression;
 import interpreter.expression.SequenceExpression;
 import interpreter.parser.Parser;
-import interpreter.parser.ParserError;
+import interpreter.error.ParserError;
 import interpreter.parser.TwoArgsLambda;
 
 import static interpreter.Util.emptyExpression;
@@ -50,6 +50,8 @@ public class ReduceRule implements Rule {
                         }
                     }
                 }
+            } else if (context.hasIncompatibleParseError()) {
+                firstPosition = args.length();
             }
         }
         if (!context.hasException()) {

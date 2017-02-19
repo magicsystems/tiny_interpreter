@@ -1,6 +1,7 @@
 package interpreter.parser;
 
 import interpreter.Context;
+import interpreter.error.ParserError;
 import interpreter.expression.Expression;
 import interpreter.expression.Identifier;
 

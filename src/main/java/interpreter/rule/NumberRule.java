@@ -4,7 +4,7 @@ import interpreter.Context;
 import interpreter.expression.Expression;
 import interpreter.parser.Parser;
 import interpreter.expression.Number;
-import interpreter.parser.ParserError;
+import interpreter.error.ParserError;
 
 import static interpreter.Util.emptyExpression;
 

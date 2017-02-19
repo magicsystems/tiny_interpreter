@@ -5,7 +5,7 @@ import interpreter.Context;
 import interpreter.expression.Expression;
 import interpreter.expression.Sequence;
 import interpreter.parser.Parser;
-import interpreter.parser.ParserError;
+import interpreter.error.ParserError;
 
 import static interpreter.Util.emptyExpression;
 

@@ -3,7 +3,7 @@ package interpreter;
 
 import interpreter.statement.Statement;
 import interpreter.parser.Parser;
-import interpreter.parser.ParserError;
+import interpreter.error.ParserError;
 
 import java.util.ArrayList;
 import java.util.List;

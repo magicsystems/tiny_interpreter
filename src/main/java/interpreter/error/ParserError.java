@@ -1,4 +1,4 @@
-package interpreter.parser;
+package interpreter.error;
 
 
 public class ParserError {

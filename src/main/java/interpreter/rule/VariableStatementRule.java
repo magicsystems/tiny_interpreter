@@ -6,7 +6,7 @@ import interpreter.statement.VariableStatement;
 import interpreter.expression.Expression;
 import interpreter.expression.Identifier;
 import interpreter.parser.Parser;
-import interpreter.parser.ParserError;
+import interpreter.error.ParserError;
 
 import static interpreter.Util.emptyStatement;
 
