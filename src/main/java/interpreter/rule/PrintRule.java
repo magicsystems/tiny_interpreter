@@ -15,7 +15,7 @@ public class PrintRule implements Rule {
 
     @Override
     public boolean couldBeApplied(String line) {
-        return line.startsWith(START) && line.endsWith("\"");
+        return line.startsWith(START) && line.endsWith("\"") && !line.equals(START);
     }
 
     @Override

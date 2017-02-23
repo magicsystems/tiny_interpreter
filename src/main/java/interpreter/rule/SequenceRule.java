@@ -26,8 +26,8 @@ public class SequenceRule implements Rule {
         String newLine = line.substring(1, line.length() - 1);
         String[] args = newLine.split(",");
         if (args.length == 2) {
-            Expression left = parser.expression(context, args[0]);
-            Expression right = parser.expression(context, args[1]);
+            Expression left = parser.numberExpression(context, args[0]);
+            Expression right = parser.numberExpression(context, args[1]);
             return new Sequence(left, right, x -> x + 1);
         } else {
             context.addException(new ParserError("Invalid sequence '" + newLine + ""));

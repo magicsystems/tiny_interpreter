@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.junit.Assert.assertThat;
 
@@ -53,30 +52,6 @@ public class InterpreterTest {
     }
 
 
-    private static final String INVALID_TYPE_REDUCE_PROGRAM =
-            "var n = 5\n" +
-                    "var val = reduce(n, 0, x y -> x + y)\n" +
-                    "print \"val = \"\n" +
-                    "out val";
-
-    @Test
-    public void testInvalidTypeReduceProgram() {
-        runProgramWithError(INVALID_TYPE_REDUCE_PROGRAM,
-                "Incompatible type error. Sequence is required, but got 'n'",
-                "Undefined variable 'val'");
-    }
-
-
-    private static final String INVALID_TYPE_MAP_PROGRAM =
-            "var n = {1,5}\n" +
-                    "var red = reduce(n, 0, x y -> x + y)\n" +
-                    "var val = map(red, y -> 3 + y)\n";
-
-    @Test
-    public void testInvalidTypeMapProgram() {
-        runProgramWithError(INVALID_TYPE_MAP_PROGRAM,
-                "Incompatible type error. Sequence is required, but got " + "'red'");
-    }
 
 
     private static final String TWO_REDUCE_OPERATION_PROGRAM =
@@ -92,30 +67,11 @@ public class InterpreterTest {
     }
 
 
-    private static final String DUPLICATE_IDENTIFIERS_PROGRAM =
-            "var m = map({1,7}, x -> x/2)\n" +
-                    "var m = reduce(m, 0, x y -> x + y)\n";
-
-    @Test
-    public void testDuplicate() {
-        runProgramWithError(DUPLICATE_IDENTIFIERS_PROGRAM, "Variable 'm' already defined in the current context");
-    }
-
-
     private static void runProgram(String program, List<String> output) {
         Interpreter interpreter = new Interpreter();
         Result result = interpreter.execute(program);
-        assertThat(result.getExceptionList(), empty());
+        assertThat(result.getAllErrorsList(), empty());
         assertThat(result.getOutput(), equalTo(output));
     }
 
-    private static void runProgramWithError(String program, String... errors) {
-        Interpreter interpreter = new Interpreter();
-        Result result = interpreter.execute(program);
-        assertThat(result.getExceptionList(), hasSize(errors.length));
-        for (int i = 0; i < errors.length; i++) {
-            assertThat(result.getExceptionList().get(i).getMessage(),
-                    equalTo(errors[i]));
-        }
-    }
 }
