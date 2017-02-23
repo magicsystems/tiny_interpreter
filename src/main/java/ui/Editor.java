@@ -8,6 +8,7 @@ import ui.listener.ProgramTextKeyListener;
 import interpreter.Interpreter;
 import interpreter.Result;
 import interpreter.error.ParserError;
+import ui.listener.ProgramTextMouseMotionListener;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
@@ -18,9 +19,11 @@ import java.util.*;
 import java.util.List;
 
 public class Editor extends JFrame {
-    private final JTextPane programTextComponent;
-    private final JTextPane programOutputTextComponent;
+    private final JTextArea programTextComponent;
+    private final JTextArea programOutputTextComponent;
     private final Interpreter interpreter;
+
+    private volatile Map<Range, String> errorsMap = new HashMap<>();
 
     public Editor() {
         super("Tiny Interpreter");
@@ -32,6 +35,14 @@ public class Editor extends JFrame {
         content.add(new JScrollPane(programOutputTextComponent), BorderLayout.SOUTH);
         setJMenuBar(createMenuBar(this));
         setSize(600, 450);
+    }
+
+    public Map<Range, String> getErrorsMap() {
+        return errorsMap;
+    }
+
+    public JTextArea getProgramTextComponent() {
+        return programTextComponent;
     }
 
     public void onSaveAction(FileWriter writer) throws IOException {
@@ -49,44 +60,42 @@ public class Editor extends JFrame {
         Map<String, List<ParserError>> errors = result.getErrors();
         StringJoiner joiner = new StringJoiner("\n");
         result.getOutput().forEach(joiner::add);
-        updateHighlights(errors);
+        errorsMap = processErrors(errors);
         programOutputTextComponent.setText(joiner.toString());
     }
 
-    private void updateHighlights(Map<String, List<ParserError>> errors) {
-        String text = programTextComponent.getText();
+    private HashMap<Range, String> processErrors(Map<String, List<ParserError>> errors) {
+        String text = "\n" + programTextComponent.getText() + "\n";
         Highlighter highlighter = programTextComponent.getHighlighter();
         Highlighter.HighlightPainter painter =
                 new DefaultHighlighter.DefaultHighlightPainter(Color.pink);
         highlighter.removeAllHighlights();
-        for (String errorCodeLines : errors.keySet()) {
-            int start = text.indexOf(errorCodeLines);
-            int end = start + errorCodeLines.length();
+        HashMap<Range, String> newMapWithErrors = new HashMap<>();
+        for (Map.Entry<String, List<ParserError>> errorWithLine : errors.entrySet()) {
+            String line = errorWithLine.getKey();
+            int start = text.indexOf("\n" + line + "\n");
+            int end = start + line.length();
             try {
                 highlighter.addHighlight(start, end, painter);
             } catch (BadLocationException e) {
                 e.printStackTrace();
             }
+            newMapWithErrors.put(new Range(start, end), errorWithLine.getValue().get(0).getMessage());
         }
+        return newMapWithErrors;
     }
 
-    private static CompoundBorder createBorder(String label) {
-        return BorderFactory.createCompoundBorder(
-                BorderFactory.createTitledBorder(label),
-                BorderFactory.createEmptyBorder(3, 3, 3, 3));
-    }
-
-
-    private static JTextPane createProgramTextArea(Editor editor) {
-        JTextPane textArea = new JTextPane();
+    private static JTextArea createProgramTextArea(Editor editor) {
+        final JTextArea textArea = new JTextArea();
         textArea.setBorder(createBorder("Program"));
         textArea.setFont(new Font("Arial", Font.PLAIN, 14));
         textArea.addKeyListener(new ProgramTextKeyListener(editor));
+        textArea.addMouseMotionListener(new ProgramTextMouseMotionListener(editor));
         return textArea;
     }
 
-    private static JTextPane createProgramOutputTextArea() {
-        JTextPane textArea = new JTextPane();
+    private static JTextArea createProgramOutputTextArea() {
+        JTextArea textArea = new JTextArea();
         textArea.setEditable(false);
         textArea.setBorder(createBorder("Program output"));
         return textArea;
@@ -101,4 +110,11 @@ public class Editor extends JFrame {
         file.add(new ExitAction());
         return menu;
     }
+
+    private static CompoundBorder createBorder(String label) {
+        return BorderFactory.createCompoundBorder(
+                BorderFactory.createTitledBorder(label),
+                BorderFactory.createEmptyBorder(3, 3, 3, 3));
+    }
+
 }
