@@ -15,16 +15,16 @@ Supported grammar:
 
 Program example:
 
-var n = 5
-var sequence = map({1, n}, i -> 2^i + 1)
-var val = reduce(sequence, 0, x y -> x + y)
-print "val = "
-out val
+  var n = 5
+  var sequence = map({1, n}, i -> 2^i + 1)
+  var val = reduce(sequence, 0, x y -> x + y)
+  print "val = "
+  out val
 
 Output for example program:
 
-val =
-67.0
+  val =
+  67.0
 
 
 To start Editor: run Main.java class
