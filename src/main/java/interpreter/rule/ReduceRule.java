@@ -14,7 +14,7 @@ import static interpreter.Util.emptyExpression;
 
 /**
  * Rule for 'reduce' function recognition.
- * <p>
+ * <p/>
  * Signature: reduce(sequence, expr, identifier identifier -> expr)
  */
 public class ReduceRule implements Rule {
@@ -48,6 +48,8 @@ public class ReduceRule implements Rule {
                         if (!localContext.hasException()) {
                             return new ReduceExpression(sequence, expression,
                                     lambda.getFirstIdentifier(), lambda.getSecondIdentifier(), lambda.getException());
+                        } else {
+                            firstPosition = args.length();
                         }
                     }
                 }
@@ -55,7 +57,7 @@ public class ReduceRule implements Rule {
                 firstPosition = args.length();
             }
         }
-        if(localContext.hasException()) {
+        if (localContext.hasException()) {
             context.addException(localContext.getExceptions().get(0));
         } else {
             context.addException(new ParserError("Invalid syntax for reduce function '" + line + "'"));

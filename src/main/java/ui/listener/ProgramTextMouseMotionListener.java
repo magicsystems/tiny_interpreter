@@ -16,7 +16,6 @@ public class ProgramTextMouseMotionListener implements MouseMotionListener {
         this.editor = editor;
     }
 
-
     @Override
     public void mouseDragged(MouseEvent e) {
 

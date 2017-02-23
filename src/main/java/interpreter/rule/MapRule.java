@@ -38,6 +38,8 @@ public class MapRule implements Rule {
                 OneArgLambda lambda = parser.parseOneArgLambda(localContext, newLine);
                 if (!localContext.hasException()) {
                     return new MapExpression(sequence, lambda.getIdentifier(), lambda.getExpression());
+                } else {
+                    position = args.length();
                 }
             } else if (localContext.hasIncompatibleParseError()) {
                 position = args.length();

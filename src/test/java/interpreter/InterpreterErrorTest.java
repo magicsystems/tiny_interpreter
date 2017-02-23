@@ -54,6 +54,24 @@ public class InterpreterErrorTest {
                 "Incompatible type error. Number is required, but got '{1.0, 5.0}'");
     }
 
+    private static final String INVALID_LAMBDA_IN_REDUCE_PROGRAM = "var n={1,5}\n" +
+            "var result = reduce(n, 0, x y -> x + z)";
+
+    @Test
+    public void testInvalidLambdaInReduceProgram() {
+        runProgramWithError(INVALID_LAMBDA_IN_REDUCE_PROGRAM,
+                "Undefined variable 'z'");
+    }
+
+
+    private static final String INVALID_LAMBDA_IN_MAP_PROGRAM = "var n={1,5}\n" +
+            "var result = map(n, x -> x + y)";
+
+    @Test
+    public void testInvalidLambdaInMapProgram() {
+        runProgramWithError(INVALID_LAMBDA_IN_MAP_PROGRAM,
+                "Undefined variable 'y'");
+    }
 
     private static void runProgramWithError(String program, String... errors) {
         Interpreter interpreter = new Interpreter();
