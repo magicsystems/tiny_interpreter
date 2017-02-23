@@ -54,8 +54,8 @@ public class InterpreterTest {
 
     private static final String TWO_REDUCE_OPERATION_PROGRAM =
             "var m = map({1,7}, x -> x/2)\n" +
-                    "var sum = reduce(m, 0, x y -> x + y)\n" +
-                    "var mult = reduce(m, 1, x y -> x * y)\n" +
+                    "var sum = reduce(m, 0,  x y -> x + y)\n" +
+                    "var mult = reduce(m, 1, x  y  ->  x * y)\n" +
                     "out sum\n" +
                     "out mult\n";
 

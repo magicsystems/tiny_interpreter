@@ -16,7 +16,7 @@ public class TwoArgsLambdaParser {
         String[] args = line.split("->");
         if (args.length == 2) {
             String identifierStr = args[0].trim();
-            String identifiers[] = identifierStr.split(" ");
+            String identifiers[] = identifierStr.split(" +");
             if (identifiers.length == 2) {
                 Identifier identifier1 = parser.parseLambdaIdentifier(context, identifiers[0]);
                 Identifier identifier2 = parser.parseLambdaIdentifier(context, identifiers[1]);
