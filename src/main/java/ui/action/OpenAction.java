@@ -23,14 +23,13 @@ public class OpenAction extends AbstractAction {
                 JFileChooser.APPROVE_OPTION)
             return;
         File file = chooser.getSelectedFile();
-        if (file == null)
-            return;
-
-        try (FileReader reader = new FileReader(file)) {
-            editor.onOpenAction(reader);
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(editor,
-                    "File Not Found", "ERROR", JOptionPane.ERROR_MESSAGE);
+        if (file != null) {
+            try (FileReader reader = new FileReader(file)) {
+                editor.onOpenAction(reader);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(editor,
+                        "File Not Found", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 }

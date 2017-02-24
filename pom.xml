@@ -21,8 +21,14 @@
             </plugin>
         </plugins>
     </build>
-
     <dependencies>
+        <!-- Code on https://github.com/bobbylight/RSyntaxTextArea -->
+        <dependency>
+            <groupId>com.fifesoft</groupId>
+            <artifactId>rsyntaxtextarea</artifactId>
+            <version>2.5.6</version>
+        </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

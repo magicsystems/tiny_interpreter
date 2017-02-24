@@ -1,6 +1,7 @@
 package ui;
 
 
+import org.fife.ui.rsyntaxtextarea.SquiggleUnderlineHighlightPainter;
 import ui.action.ExitAction;
 import ui.action.OpenAction;
 import ui.action.SaveAction;
@@ -22,6 +23,7 @@ public class Editor extends JFrame {
     private final JTextArea programTextComponent;
     private final JTextArea programOutputTextComponent;
     private final Interpreter interpreter;
+    private final Highlighter.HighlightPainter painter;
 
     private volatile Map<Range, String> errorsMap = new HashMap<>();
 
@@ -30,6 +32,7 @@ public class Editor extends JFrame {
         programTextComponent = createProgramTextArea(this);
         programOutputTextComponent = createProgramOutputTextArea();
         interpreter = new Interpreter();
+        painter = new SquiggleUnderlineHighlightPainter(Color.red);
         Container content = getContentPane();
         content.add(new JScrollPane(programTextComponent), BorderLayout.CENTER);
         content.add(new JScrollPane(programOutputTextComponent), BorderLayout.SOUTH);
@@ -67,20 +70,21 @@ public class Editor extends JFrame {
     private HashMap<Range, String> processErrors(Map<String, List<ParserError>> errors) {
         String text = "\n" + programTextComponent.getText() + "\n";
         Highlighter highlighter = programTextComponent.getHighlighter();
-        Highlighter.HighlightPainter painter =
-                new DefaultHighlighter.DefaultHighlightPainter(Color.pink);
         highlighter.removeAllHighlights();
         HashMap<Range, String> newMapWithErrors = new HashMap<>();
         for (Map.Entry<String, List<ParserError>> errorWithLine : errors.entrySet()) {
             String line = errorWithLine.getKey();
             int start = text.indexOf("\n" + line + "\n");
-            int end = start + line.length();
-            try {
-                highlighter.addHighlight(start, end, painter);
-            } catch (BadLocationException e) {
-                e.printStackTrace();
+            while (start != -1) {
+                int end = start + line.length();
+                try {
+                    highlighter.addHighlight(start, end, painter);
+                } catch (BadLocationException e) {
+                    e.printStackTrace();
+                }
+                newMapWithErrors.put(new Range(start, end), errorWithLine.getValue().get(0).getMessage());
+                start = text.indexOf("\n" + line + "\n", start + 1);
             }
-            newMapWithErrors.put(new Range(start, end), errorWithLine.getValue().get(0).getMessage());
         }
         return newMapWithErrors;
     }
@@ -116,5 +120,4 @@ public class Editor extends JFrame {
                 BorderFactory.createTitledBorder(label),
                 BorderFactory.createEmptyBorder(3, 3, 3, 3));
     }
-
 }

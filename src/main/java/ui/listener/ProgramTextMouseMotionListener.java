@@ -17,11 +17,6 @@ public class ProgramTextMouseMotionListener implements MouseMotionListener {
     }
 
     @Override
-    public void mouseDragged(MouseEvent e) {
-
-    }
-
-    @Override
     public void mouseMoved(MouseEvent e) {
         Map<Range, String> mapWithErrors = editor.getErrorsMap();
         JTextArea textArea = editor.getProgramTextComponent();
@@ -34,4 +29,10 @@ public class ProgramTextMouseMotionListener implements MouseMotionListener {
                 });
 
     }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+
+    }
+
 }

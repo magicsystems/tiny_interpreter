@@ -24,14 +24,13 @@ public class SaveAction extends AbstractAction {
                 JFileChooser.APPROVE_OPTION)
             return;
         File file = chooser.getSelectedFile();
-        if (file == null)
-            return;
-
-        try (FileWriter writer = new FileWriter(file)) {
-            editor.onSaveAction(writer);
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(editor,
-                    "File Not Saved", "ERROR", JOptionPane.ERROR_MESSAGE);
+        if (file != null) {
+            try (FileWriter writer = new FileWriter(file)) {
+                editor.onSaveAction(writer);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(editor,
+                        "File Not Saved", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 }
