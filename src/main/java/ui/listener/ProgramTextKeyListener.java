@@ -15,7 +15,10 @@ public class ProgramTextKeyListener implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        editor.onProgramTextChanged();
+        int keyCode = e.getKeyCode();
+        if (isProgramNeedToBeRecalculated(keyCode)) {
+            editor.onProgramTextChanged();
+        }
     }
 
     @Override
@@ -24,6 +27,9 @@ public class ProgramTextKeyListener implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+    }
 
+    private static boolean isProgramNeedToBeRecalculated(int keycode) {
+        return (keycode != 16 && keycode < 37) || keycode > 39;
     }
 }

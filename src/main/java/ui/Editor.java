@@ -18,12 +18,23 @@ import java.awt.*;
 import java.io.*;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ *  Main Editor's frame. Consists of two component: component for program text and for program output.
+ *  Error lines are highlighted by {@link SquiggleUnderlineHighlightPainter}
+ *
+ *  Program is executed in background thread with "execute only last statement" strategy.
+ */
 public class Editor extends JFrame {
     private final JTextArea programTextComponent;
     private final JTextArea programOutputTextComponent;
     private final Interpreter interpreter;
     private final Highlighter.HighlightPainter painter;
+    private final ExecutorService backgroundExecutor = Executors.newSingleThreadExecutor();
+    private final AtomicReference<Runnable> lastTask = new AtomicReference<>();
 
     private volatile Map<Range, String> errorsMap = new HashMap<>();
 
@@ -58,13 +69,23 @@ public class Editor extends JFrame {
     }
 
     public void onProgramTextChanged() {
-        String text = programTextComponent.getText();
-        Result result = interpreter.execute(text);
+        String programText = programTextComponent.getText();
+        lastTask.set(() -> executeOnProgramChange(programText));
+        backgroundExecutor.execute(() -> {
+            Runnable task = lastTask.getAndSet(null);
+            if (task != null) {
+                task.run();
+            }
+        });
+    }
+
+    private void executeOnProgramChange(String programText) {
+        Result result = interpreter.execute(programText);
         Map<String, List<ParserError>> errors = result.getErrors();
         StringJoiner joiner = new StringJoiner("\n");
         result.getOutput().forEach(joiner::add);
         errorsMap = processErrors(errors);
-        programOutputTextComponent.setText(joiner.toString());
+        SwingUtilities.invokeLater(() -> programOutputTextComponent.setText(joiner.toString()));
     }
 
     private HashMap<Range, String> processErrors(Map<String, List<ParserError>> errors) {
