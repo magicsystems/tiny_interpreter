@@ -1,17 +1,19 @@
 package interpreter.rule;
 
 import interpreter.Context;
+import interpreter.expression.NumberExpression;
+import interpreter.statement.NoOpExpressionStatement;
 import interpreter.statement.Statement;
-import interpreter.statement.OutExpressionStatement;
+import interpreter.statement.OutNumberExpressionStatement;
 import interpreter.statement.OutSequenceStatement;
 import interpreter.expression.Expression;
 import interpreter.expression.SequenceExpression;
 import interpreter.parser.Parser;
 
 /**
- *  Prints expressions - number and sequence:
- *  <p>
- *  out {1,8}
+ * Prints expressions - number and sequence:
+ * <p/>
+ * out {1,8}
  */
 public class OutRule implements Rule {
     private static final String START = "out ";
@@ -27,8 +29,10 @@ public class OutRule implements Rule {
         Expression expression = parser.expression(context, newLine);
         if (expression instanceof SequenceExpression) {
             return new OutSequenceStatement((SequenceExpression) expression);
+        } else if (expression instanceof NumberExpression) {
+            return new OutNumberExpressionStatement((NumberExpression) expression);
         } else {
-            return new OutExpressionStatement(expression);
+            return new NoOpExpressionStatement();
         }
     }
 }

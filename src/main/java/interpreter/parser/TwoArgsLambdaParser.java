@@ -2,8 +2,8 @@ package interpreter.parser;
 
 import interpreter.Context;
 import interpreter.error.ParserError;
-import interpreter.expression.Expression;
 import interpreter.expression.Identifier;
+import interpreter.expression.NumberExpression;
 
 import static interpreter.Util.emptyTwoArgsLambda;
 
@@ -23,7 +23,7 @@ public class TwoArgsLambdaParser {
                 Context localContext = new Context();
                 localContext.putNumericVariable(identifier1.getName(), 1.0);
                 localContext.putNumericVariable(identifier2.getName(), 1.0);
-                Expression expression = parser.expression(localContext, args[1]);
+                NumberExpression expression = parser.numberExpression(localContext, args[1]);
                 if (localContext.hasException()) {
                     context.addException(localContext.getExceptions().get(0));
                 }

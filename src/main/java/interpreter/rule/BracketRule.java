@@ -3,6 +3,7 @@ package interpreter.rule;
 import interpreter.Context;
 import interpreter.expression.BracketExpression;
 import interpreter.expression.Expression;
+import interpreter.expression.NumberExpression;
 import interpreter.parser.Parser;
 
 /**
@@ -24,7 +25,7 @@ public class BracketRule implements Rule {
     @Override
     public Expression parse(Parser parser, String line, Context context) {
         String newLine = line.substring(1, line.length() - 1);
-        Expression expression = parser.expression(context, newLine);
+        NumberExpression expression = parser.numberExpression(context, newLine);
         return new BracketExpression(expression);
     }
 }

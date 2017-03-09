@@ -1,25 +1,24 @@
 package interpreter.expression;
 
 import interpreter.Context;
-import interpreter.Util;
 
 import java.util.stream.DoubleStream;
 
 /**
  * Expression representation for a reduce() function.
- *
+ * <p/>
  * On execution converts underline sequence into parallel {@link DoubleStream}
  */
 public class ReduceExpression implements NumberExpression {
     private SequenceExpression sequence;
-    private Expression identity;
-    private Expression expression;
+    private NumberExpression identity;
+    private NumberExpression expression;
     private String firstIdentifier;
     private String secondIdentifier;
 
-    public ReduceExpression(SequenceExpression sequence, Expression identity,
+    public ReduceExpression(SequenceExpression sequence, NumberExpression identity,
                             String firstIdentifier, String secondIdentifier,
-                            Expression expression) {
+                            NumberExpression expression) {
         this.sequence = sequence;
         this.identity = identity;
         this.expression = expression;
@@ -29,20 +28,18 @@ public class ReduceExpression implements NumberExpression {
 
     @Override
     public double value(Context context) {
-        DoubleStream stream = Util.sequenceToStream(sequence, context);
-        double answer = stream.parallel().reduce(identity.value(context), (x, y) -> {
+        DoubleStream stream = sequence.stream(context);
+        double identityValue = identity.value(context);
+        return stream.parallel().reduce(identityValue, (x, y) -> {
             Context internalContext = new Context();
             internalContext.putNumericVariable(firstIdentifier, x);
             internalContext.putNumericVariable(secondIdentifier, y);
             return expression.value(internalContext);
         });
-        sequence.clear();
-        return answer;
     }
 
     public String toString() {
         return "reduce(" + sequence + ", " + identity + ", (" +
                 firstIdentifier + ", " + secondIdentifier + ") ->" + expression + ")";
     }
-
 }

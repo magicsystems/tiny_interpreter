@@ -3,13 +3,14 @@ package interpreter.rule;
 
 import interpreter.Context;
 import interpreter.expression.Expression;
+import interpreter.expression.NumberExpression;
 import interpreter.expression.ReduceExpression;
 import interpreter.expression.SequenceExpression;
 import interpreter.parser.Parser;
 import interpreter.error.ParserError;
 import interpreter.parser.TwoArgsLambda;
 
-import static interpreter.Util.emptyExpression;
+import static interpreter.Util.emptyNumberExpression;
 
 
 /**
@@ -41,7 +42,7 @@ public class ReduceRule implements Rule {
                 while ((secondPosition = args.indexOf(",", secondPosition + 1)) != -1) {
                     localContext.clearExceptions();
                     newLine = args.substring(firstPosition + 1, secondPosition);
-                    Expression expression = parser.expression(localContext, newLine);
+                    NumberExpression expression = parser.numberExpression(localContext, newLine);
                     if (!localContext.hasException()) {
                         newLine = args.substring(secondPosition + 1, args.length());
                         TwoArgsLambda lambda = parser.parseTwoArgsLambda(localContext, newLine);
@@ -62,6 +63,6 @@ public class ReduceRule implements Rule {
         } else {
             context.addException(new ParserError("Invalid syntax for reduce function '" + line + "'"));
         }
-        return emptyExpression();
+        return emptyNumberExpression();
     }
 }

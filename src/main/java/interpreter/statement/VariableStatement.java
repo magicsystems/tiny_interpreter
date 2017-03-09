@@ -21,7 +21,7 @@ public class VariableStatement implements Statement {
     @Override
     public void execute(Context context) {
         if (variable instanceof NumberExpression) {
-            context.putNumericVariable(name, variable.value(context));
+            context.putNumericVariable(name, ((NumberExpression)variable).value(context));
         } else if (variable instanceof SequenceExpression) {
             context.putSequenceVariable(name, (SequenceExpression) variable);
         }

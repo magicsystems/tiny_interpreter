@@ -2,24 +2,14 @@ package interpreter.expression;
 
 import interpreter.Context;
 
+import java.util.stream.DoubleStream;
+
 
 public class NoOpSequenceExpression implements SequenceExpression {
-    boolean element = true;
 
     @Override
-    public boolean hasNext() {
-        return element;
-    }
-
-    @Override
-    public void clear() {
-        element = true;
-    }
-
-    @Override
-    public double value(Context context) {
-        element = false;
-        return 0;
+    public DoubleStream stream(Context context) {
+        return null;
     }
 
     @Override

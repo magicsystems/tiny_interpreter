@@ -1,14 +1,13 @@
 package interpreter.parser;
 
-
-import interpreter.expression.Expression;
+import interpreter.expression.NumberExpression;
 
 public class TwoArgsLambda {
     private final String firstIdentifier;
     private final String secondIdentifier;
-    private final Expression expression;
+    private final NumberExpression expression;
 
-    public TwoArgsLambda(Expression expression, String firstIdentifier, String secondIdentifier) {
+    public TwoArgsLambda(NumberExpression expression, String firstIdentifier, String secondIdentifier) {
         this.firstIdentifier = firstIdentifier;
         this.secondIdentifier = secondIdentifier;
         this.expression = expression;
@@ -22,7 +21,7 @@ public class TwoArgsLambda {
         return secondIdentifier;
     }
 
-    public Expression getException() {
+    public NumberExpression getException() {
         return expression;
     }
 }

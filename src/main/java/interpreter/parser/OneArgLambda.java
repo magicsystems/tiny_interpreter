@@ -1,17 +1,17 @@
 package interpreter.parser;
 
-import interpreter.expression.Expression;
+import interpreter.expression.NumberExpression;
 
 public class OneArgLambda {
     private final String identifier;
-    private final Expression expression;
+    private final NumberExpression expression;
 
-    public OneArgLambda(Expression expression, String identifier) {
+    public OneArgLambda(NumberExpression expression, String identifier) {
         this.expression = expression;
         this.identifier = identifier;
     }
 
-    public Expression getExpression() {
+    public NumberExpression getExpression() {
         return expression;
     }
 

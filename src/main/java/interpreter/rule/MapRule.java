@@ -9,6 +9,7 @@ import interpreter.parser.Parser;
 import interpreter.error.ParserError;
 
 import static interpreter.Util.emptyExpression;
+import static interpreter.Util.emptySequence;
 
 /**
  * Rule for 'map' function recognition.
@@ -50,7 +51,7 @@ public class MapRule implements Rule {
         } else {
             context.addException(new ParserError("Invalid syntax for map function '" + line + "'"));
         }
-        return emptyExpression();
+        return emptySequence();
     }
 
 }

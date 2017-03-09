@@ -27,8 +27,8 @@ public class ExpressionCalculationTest {
 
     @Test
     public void testMapExpression() {
-       MapExpression mapExpression = new MapExpression(new Sequence(new Number(5.0), new Number(7.0),
-               x -> x  + 1), "x", new ArithmeticExpression(new Identifier("x"), new Number(4.0), Operation.MULT));
+       MapExpression mapExpression = new MapExpression(new Sequence(new Number(5.0), new Number(7.0)),
+               "x", new ArithmeticExpression(new Identifier("x"), new Number(4.0), Operation.MULT));
         List<Double> result = Util.sequenceToList(mapExpression, emptyContext);
 
         assertThat(Arrays.asList(20.0, 24.0, 28.0), equalTo(result));

@@ -8,7 +8,7 @@ import interpreter.expression.Operation;
 import interpreter.parser.Parser;
 import interpreter.error.ParserError;
 
-import static interpreter.Util.emptyExpression;
+import static interpreter.Util.emptyNumberExpression;
 
 /**
  * Rule for {@link interpreter.expression.Operation} application.
@@ -50,7 +50,7 @@ public class ArithmeticOperationRule implements Rule {
             return new ArithmeticExpression(left, right, operation);
         } else {
             context.addException(new ParserError("Couldn't apply arithmetic operation to '" + line + "'"));
-            return emptyExpression();
+            return emptyNumberExpression();
         }
     }
 }

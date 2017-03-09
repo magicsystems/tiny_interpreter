@@ -4,9 +4,9 @@ import interpreter.Context;
 
 
 public class BracketExpression implements NumberExpression {
-    private final Expression expression;
+    private final NumberExpression expression;
 
-    public BracketExpression(Expression expression) {
+    public BracketExpression(NumberExpression expression) {
         this.expression = expression;
     }
 

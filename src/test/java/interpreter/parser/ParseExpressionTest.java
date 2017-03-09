@@ -2,7 +2,6 @@ package interpreter.parser;
 
 
 import interpreter.Context;
-import interpreter.expression.Expression;
 import interpreter.expression.NumberExpression;
 import interpreter.expression.SequenceExpression;
 import interpreter.Util;
@@ -43,14 +42,12 @@ public class ParseExpressionTest {
         SequenceExpression sequenceExpression = parser.sequenceExpression(emptyContext, "{1, 6}");
         assertThat(emptyContext.hasException(), equalTo(false));
         emptyContext.putSequenceVariable("sequence", sequenceExpression);
-        Expression expression = parser.expression(emptyContext, "reduce(sequence, 1, x y -> x * y)");
+        NumberExpression expression = parser.numberExpression(emptyContext, "reduce(sequence, 1, x y -> x * y)");
         assertThat(emptyContext.hasException(), equalTo(false));
-        assertThat(expression instanceof NumberExpression, equalTo(true));
         assertThat(expression.value(emptyContext), equalTo(720.0));
 
-        expression = parser.expression(emptyContext, "reduce(sequence, 1, a e -> (a * e))");
+        expression = parser.numberExpression(emptyContext, "reduce(sequence, 1, a e -> (a * e))");
         assertThat(emptyContext.hasException(), equalTo(false));
-        assertThat(expression instanceof NumberExpression, equalTo(true));
         assertThat(expression.value(emptyContext), equalTo(720.0));
 
     }
@@ -76,10 +73,9 @@ public class ParseExpressionTest {
         Parser parser = new Parser();
         Context emptyContext = new Context();
         emptyContext.putNumericVariable("n", 3.0);
-        Expression expression = parser.expression(emptyContext, "map({1, n}, i -> 2 ^ i + 1)");
+        SequenceExpression expression = parser.sequenceExpression(emptyContext, "map({1, n}, i -> 2 ^ i + 1)");
         assertThat(emptyContext.hasException(), equalTo(false));
-        assertThat(expression instanceof SequenceExpression, equalTo(true));
-        List<Double> sequence = Util.sequenceToList((SequenceExpression) expression, emptyContext);
+        List<Double> sequence = Util.sequenceToList(expression, emptyContext);
         assertThat(sequence, equalTo(Arrays.asList(3.0, 5.0, 9.0)));
     }
 
@@ -101,11 +97,9 @@ public class ParseExpressionTest {
     private static void checkNumberFunctionResult(String function, double result) {
         Parser parser = new Parser();
         Context context = new Context();
-        Expression expression = parser.expression(context, function);
+        NumberExpression expression = parser.numberExpression(context, function);
         assertThat(context.hasException(), equalTo(false));
-        assertThat(expression instanceof NumberExpression, equalTo(true));
         assertThat(expression.value(context), equalTo(result));
-
     }
 
 }

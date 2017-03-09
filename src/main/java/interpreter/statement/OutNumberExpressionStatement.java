@@ -2,15 +2,15 @@ package interpreter.statement;
 
 
 import interpreter.Context;
-import interpreter.expression.Expression;
+import interpreter.expression.NumberExpression;
 
 /**
  * Puts expression to be print into context
  */
-public class OutExpressionStatement implements Statement {
-    private final Expression expression;
+public class OutNumberExpressionStatement implements Statement {
+    private final NumberExpression expression;
 
-    public OutExpressionStatement(Expression expression) {
+    public OutNumberExpressionStatement(NumberExpression expression) {
         this.expression = expression;
     }
 

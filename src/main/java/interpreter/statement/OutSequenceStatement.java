@@ -2,7 +2,7 @@ package interpreter.statement;
 
 import interpreter.Context;
 import interpreter.expression.*;
-import java.util.StringJoiner;
+import java.util.stream.Collectors;
 
 /**
  * Puts sequence expression to be print into context
@@ -20,11 +20,6 @@ public class OutSequenceStatement implements Statement {
     }
 
     private static String sequenceToString(SequenceExpression sequence, Context context) {
-        StringJoiner joiner = new StringJoiner(", ", "{", "}");
-        while (sequence.hasNext()) {
-            joiner.add(String.valueOf(sequence.value(context)));
-        }
-        sequence.clear();
-        return joiner.toString();
+        return sequence.stream(context).mapToObj(String::valueOf).collect(Collectors.joining(", ", "{", "}"));
     }
 }

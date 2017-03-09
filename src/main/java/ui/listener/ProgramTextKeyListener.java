@@ -30,6 +30,6 @@ public class ProgramTextKeyListener implements KeyListener {
     }
 
     private static boolean isProgramNeedToBeRecalculated(int keycode) {
-        return (keycode != 16 && keycode < 37) || keycode > 39;
+        return (keycode != 16 && keycode < 37) || (keycode > 39 && keycode != 157);
     }
 }

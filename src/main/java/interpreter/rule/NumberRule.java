@@ -6,7 +6,7 @@ import interpreter.parser.Parser;
 import interpreter.expression.Number;
 import interpreter.error.ParserError;
 
-import static interpreter.Util.emptyExpression;
+import static interpreter.Util.emptyNumberExpression;
 
 /**
  * Simplest possible resolving for double values
@@ -25,7 +25,7 @@ public class NumberRule implements Rule {
 
         } else {
             context.addException(new ParserError("Invalid number '"+line +"'"));
-            return emptyExpression();
+            return emptyNumberExpression();
         }
     }
 

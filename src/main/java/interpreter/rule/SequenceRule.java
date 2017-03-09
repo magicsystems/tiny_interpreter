@@ -3,11 +3,12 @@ package interpreter.rule;
 
 import interpreter.Context;
 import interpreter.expression.Expression;
+import interpreter.expression.NumberExpression;
 import interpreter.expression.Sequence;
 import interpreter.parser.Parser;
 import interpreter.error.ParserError;
 
-import static interpreter.Util.emptyExpression;
+import static interpreter.Util.emptySequence;
 
 /**
  * Rule for sequence expressions:
@@ -26,12 +27,12 @@ public class SequenceRule implements Rule {
         String newLine = line.substring(1, line.length() - 1);
         String[] args = newLine.split(",");
         if (args.length == 2) {
-            Expression left = parser.numberExpression(context, args[0]);
-            Expression right = parser.numberExpression(context, args[1]);
-            return new Sequence(left, right, x -> x + 1);
+            NumberExpression left = parser.numberExpression(context, args[0]);
+            NumberExpression right = parser.numberExpression(context, args[1]);
+            return new Sequence(left, right);
         } else {
             context.addException(new ParserError("Invalid sequence '" + newLine + ""));
-            return emptyExpression();
+            return emptySequence();
         }
     }
 }
