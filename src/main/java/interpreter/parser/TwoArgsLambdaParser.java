@@ -13,9 +13,9 @@ import static interpreter.Util.emptyTwoArgsLambda;
 public class TwoArgsLambdaParser {
 
     public TwoArgsLambda parse(Parser parser, Context context, String line) {
-        String[] args = line.split("->");
-        if (args.length == 2) {
-            String identifierStr = args[0].trim();
+        int firstLambda = line.indexOf("->");
+        if (firstLambda != -1) {
+            String identifierStr = line.substring(0, firstLambda);
             String identifiers[] = identifierStr.split(" +");
             if (identifiers.length == 2) {
                 Identifier identifier1 = parser.parseLambdaIdentifier(context, identifiers[0]);
@@ -23,7 +23,8 @@ public class TwoArgsLambdaParser {
                 Context localContext = new Context();
                 localContext.putNumericVariable(identifier1.getName(), 1.0);
                 localContext.putNumericVariable(identifier2.getName(), 1.0);
-                NumberExpression expression = parser.numberExpression(localContext, args[1]);
+                NumberExpression expression = parser.numberExpression(localContext, line.substring(firstLambda + 2,
+                        line.length()));
                 if (localContext.hasException()) {
                     context.addException(localContext.getExceptions().get(0));
                 }

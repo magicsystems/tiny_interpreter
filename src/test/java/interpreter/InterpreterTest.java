@@ -83,6 +83,14 @@ public class InterpreterTest {
         runProgram(NESTED_MAP_WITH_VARIABLE_OPERATION_PROGRAM, Arrays.asList("720.0"));
     }
 
+    private static final String REDUCE_IN_LAMBDA_OPERATION_PROGRAM =
+                    "out reduce({1,5}, 1, x y -> x * reduce({1,3}, 1, z k -> k))";
+
+    @Test
+    public void testReduceInLambda() {
+        runProgram(REDUCE_IN_LAMBDA_OPERATION_PROGRAM, Arrays.asList("27.0"));
+    }
+
     private static void runProgram(String program, List<String> output) {
         Interpreter interpreter = new Interpreter();
         Result result = interpreter.execute(program);
