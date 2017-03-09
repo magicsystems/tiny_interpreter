@@ -18,6 +18,7 @@ public class InterpreterTest {
                     "var val = reduce(sequence, 0, x y -> x + y)\n" +
                     "print \"val = \"\n" +
                     "out val";
+
     @Test
     public void testInterpretation() {
         runProgram(PROGRAM_ONE, Arrays.asList("val = ", "67.0"));
@@ -64,6 +65,23 @@ public class InterpreterTest {
         runProgram(TWO_REDUCE_OPERATION_PROGRAM, Arrays.asList("14.0", "39.375"));
     }
 
+
+    private static final String NESTED_REDUCE_WITH_MAP_OPERATION_PROGRAM =
+            "out reduce({1, reduce({1,3}, 1, x y -> x * y)}, 0, x y -> x + y)";
+
+    @Test
+    public void testNestedReduce() {
+        runProgram(NESTED_REDUCE_WITH_MAP_OPERATION_PROGRAM, Arrays.asList("21.0"));
+    }
+
+    private static final String NESTED_MAP_WITH_VARIABLE_OPERATION_PROGRAM =
+            "var n = 5\n" +
+                    "out reduce(map({1,n}, x -> x + 1), 1, x y -> x * y)";
+
+    @Test
+    public void testNestedMapWithVariable() {
+        runProgram(NESTED_MAP_WITH_VARIABLE_OPERATION_PROGRAM, Arrays.asList("720.0"));
+    }
 
     private static void runProgram(String program, List<String> output) {
         Interpreter interpreter = new Interpreter();
