@@ -16,6 +16,11 @@ public class Number implements NumberExpression {
     }
 
     @Override
+    public double lambdaValue(Object[] array) {
+        return value;
+    }
+
+    @Override
     public String toString() {
         return String.valueOf(value);
     }

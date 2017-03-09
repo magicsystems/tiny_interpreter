@@ -16,6 +16,11 @@ public class BracketExpression implements NumberExpression {
     }
 
     @Override
+    public double lambdaValue(Object[] array) {
+        return expression.lambdaValue(array);
+    }
+
+    @Override
     public String toString() {
         return "(" + expression + ")";
     }

@@ -11,6 +11,11 @@ public class NoOpNumberExpression implements NumberExpression {
     }
 
     @Override
+    public double lambdaValue(Object[] array) {
+        return 0;
+    }
+
+    @Override
     public String toString() {
        return "No Op Number Expression";
     }

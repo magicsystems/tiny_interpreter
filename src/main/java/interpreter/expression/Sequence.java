@@ -4,7 +4,7 @@ package interpreter.expression;
 import interpreter.Context;
 
 import java.util.stream.DoubleStream;
-import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 /**
  * SequenceExpression which uses  {@link java.util.function.Function} for production
@@ -20,9 +20,9 @@ public class Sequence implements SequenceExpression {
     }
     @Override
     public DoubleStream stream(Context context) {
-        int leftInt = (int)this.left.value(context);
-        int rightInt = (int)this.right.value(context) + 1;
-        return IntStream.range(leftInt, rightInt).parallel().mapToDouble(Double::valueOf);
+        long leftInt = (long)this.left.value(context);
+        long rightInt = (long)this.right.value(context) + 1;
+        return LongStream.range(leftInt, rightInt).parallel().mapToDouble(Double::valueOf);
     }
 
     @Override

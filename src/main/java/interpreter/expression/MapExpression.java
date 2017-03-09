@@ -24,9 +24,10 @@ public class MapExpression implements SequenceExpression {
     public DoubleStream stream(Context context) {
         DoubleStream stream = this.sequence.stream(context);
         return stream.parallel().map(x -> {
-            Context internalContext = new Context();
-            internalContext.putNumericVariable(identifier, x);
-            return arithmeticExpression.value(internalContext);
+            Object[] array = new Object[2];
+            array[0] = identifier;
+            array[1] = x;
+            return arithmeticExpression.lambdaValue(array);
         });
     }
 
