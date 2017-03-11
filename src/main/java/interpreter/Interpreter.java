@@ -34,7 +34,7 @@ public class Interpreter {
             }
             Statement statement = parser.statement(context, line);
             if (context.hasException()) {
-                errors.put(line, new ArrayList<>(context.getExceptions()));
+                errors.put(line, new ArrayList<>(context.getErrors()));
                 context.clearExceptions();
             } else {
                 statement.execute(context);

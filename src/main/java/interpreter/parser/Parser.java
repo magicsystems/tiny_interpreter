@@ -100,7 +100,7 @@ public class Parser {
             if (type.isAssignableFrom(expression.getClass())) {
                 return (T) expression;
             } else {
-                context.addException(new IncompatibleTypeError("Incompatible type error. " +
+                context.addError(new IncompatibleTypeError("Incompatible type error. " +
                         requiredType + " is required, but got '" + expression.toString() + "'"));
             }
         }
@@ -123,6 +123,6 @@ public class Parser {
     private static void addException(Context context, String line, String type) {
         ParserError parserError = new ParserError("Line '" + line + "' couldn't be recognised " +
                 "as a valid '" + type + " " + "'");
-        context.addException(parserError);
+        context.addError(parserError);
     }
 }

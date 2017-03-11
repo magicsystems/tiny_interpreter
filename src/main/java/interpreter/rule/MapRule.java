@@ -8,7 +8,6 @@ import interpreter.parser.OneArgLambda;
 import interpreter.parser.Parser;
 import interpreter.error.ParserError;
 
-import static interpreter.Util.emptyExpression;
 import static interpreter.Util.emptySequence;
 
 /**
@@ -47,9 +46,9 @@ public class MapRule implements Rule {
             }
         }
         if(localContext.hasException()) {
-            context.addExceptions(localContext.getExceptions());
+            context.addErrors(localContext.getErrors());
         } else {
-            context.addException(new ParserError("Invalid syntax for map function '" + line + "'"));
+            context.addError(new ParserError("Invalid syntax for map function '" + line + "'"));
         }
         return emptySequence();
     }

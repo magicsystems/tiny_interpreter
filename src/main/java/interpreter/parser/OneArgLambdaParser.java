@@ -20,12 +20,12 @@ public class OneArgLambdaParser {
             localContext.putNumericVariable(identifier.getName(), 1.0);
             NumberExpression expression = parser.numberExpression(localContext, args[1]);
             if (localContext.hasException()) {
-                context.addExceptions(localContext.getExceptions());
+                context.addErrors(localContext.getErrors());
             } else {
                 return new OneArgLambda(expression, identifier.getName());
             }
         } else {
-            context.addException(new ParserError("Invalid one arg lambda syntax '" + line + "'"));
+            context.addError(new ParserError("Invalid one arg lambda syntax '" + line + "'"));
         }
         return emptyOneArgLambda();
     }

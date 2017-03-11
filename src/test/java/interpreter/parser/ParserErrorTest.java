@@ -33,8 +33,8 @@ public class ParserErrorTest {
         Context context = new Context();
         parser.parseTwoArgsLambda(context, "x c -> x + t*7");
         assertThat(context.hasException(), equalTo(true));
-        assertThat(context.getExceptions(), hasSize(1));
-        assertThat(context.getExceptions().get(0).getMessage(),
+        assertThat(context.getErrors(), hasSize(1));
+        assertThat(context.getErrors().get(0).getMessage(),
                 equalTo("Undefined variable 't'"));
     }
 
@@ -50,13 +50,18 @@ public class ParserErrorTest {
         checkError("  + 32*5", "Expression expected");
     }
 
+    @Test
+    public void testReduceErrors() {
+        checkError("reduce({1,4}, r, x y -> x+1)", "Undefined variable 'r'");
+    }
+
     private static void checkError(String line, String exception) {
         Parser parser = new Parser();
         Context context = new Context();
         parser.expression(context, line);
         assertThat(context.hasException(), equalTo(true));
-        assertThat(context.getExceptions(), hasSize(1));
-        assertThat(context.getExceptions().get(0).getMessage(),
+        assertThat(context.getErrors(), hasSize(1));
+        assertThat(context.getErrors().get(0).getMessage(),
                 equalTo(exception));
     }
 }

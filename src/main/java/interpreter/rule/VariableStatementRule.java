@@ -32,7 +32,7 @@ public class VariableStatementRule implements Rule {
             Expression expression = parser.expression(context, args[1]);
             return new VariableStatement(expression, identifier.getName());
         } else {
-            context.addException(new ParserError("Invalid var statement declaration '" + line + "'"));
+            context.addError(new ParserError("Invalid var statement declaration '" + line + "'"));
             return emptyStatement();
         }
     }

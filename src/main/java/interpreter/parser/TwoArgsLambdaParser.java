@@ -26,15 +26,15 @@ public class TwoArgsLambdaParser {
                 NumberExpression expression = parser.numberExpression(localContext, line.substring(firstLambda + 2,
                         line.length()));
                 if (localContext.hasException()) {
-                    context.addExceptions(localContext.getExceptions());
+                    context.addErrors(localContext.getErrors());
                 }
                 return new TwoArgsLambda(expression,
                         identifier1.getName(), identifier2.getName());
             } else {
-                context.addException(new ParserError("Invalid declaration for two identifiers '" + identifierStr + "'"));
+                context.addError(new ParserError("Invalid declaration for two identifiers '" + identifierStr + "'"));
             }
         } else {
-            context.addException(new ParserError("Invalid two args lambda syntax '" + line + "'"));
+            context.addError(new ParserError("Invalid two args lambda syntax '" + line + "'"));
         }
         return emptyTwoArgsLambda();
     }

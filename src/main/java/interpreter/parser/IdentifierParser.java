@@ -28,7 +28,7 @@ public class IdentifierParser {
     }
 
     private static Identifier errorResponse(Context context, String error) {
-        context.addException(new ParserError(error));
+        context.addError(new ParserError(error));
         return new Identifier("empty");
     }
 }

@@ -6,9 +6,9 @@ import interpreter.expression.Expression;
 import interpreter.expression.NumberExpression;
 import interpreter.expression.Operation;
 import interpreter.parser.Parser;
-import interpreter.error.ParserError;
 
 import static interpreter.Util.emptyNumberExpression;
+import static interpreter.Util.expressionExpected;
 
 /**
  * Rule for {@link interpreter.expression.Operation} application.
@@ -45,7 +45,7 @@ public class ArithmeticOperationRule implements Rule {
     public Expression parse(Parser parser, String line, Context context) {
         int position = line.indexOf(operation.getChar());
         if (position == 0 || position == line.length() - 1) {
-            context.addException(new ParserError("Expression expected"));
+            context.addError(expressionExpected());
             return emptyNumberExpression();
         } else {
             NumberExpression left = parser.numberExpression(context, line.substring(0, position));

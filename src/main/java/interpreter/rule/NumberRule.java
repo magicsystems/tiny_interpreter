@@ -24,7 +24,7 @@ public class NumberRule implements Rule {
             return new Number(result);
 
         } else {
-            context.addException(new ParserError("Invalid number '"+line +"'"));
+            context.addError(new ParserError("Invalid number '" + line + "'"));
             return emptyNumberExpression();
         }
     }

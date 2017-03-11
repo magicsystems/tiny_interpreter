@@ -36,6 +36,12 @@ public class ParseExpressionTest {
     }
 
     @Test
+    public void testParseReduceWithReduce() {
+        checkNumberFunctionResult("reduce(map({1, 3}, x -> x * 2 + 0.5), " +
+                "reduce({2,4}, 1, x y -> x), x y -> x + y)", 16.5);
+    }
+
+    @Test
     public void testParseReduceWithVariable() {
         Parser parser = new Parser();
         Context emptyContext = new Context();

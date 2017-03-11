@@ -1,10 +1,10 @@
 package interpreter.rule;
 
 import interpreter.Context;
+import interpreter.error.UndefinedVariableError;
 import interpreter.expression.Expression;
 import interpreter.expression.Identifier;
 import interpreter.parser.Parser;
-import interpreter.error.ParserError;
 
 import static interpreter.Util.emptyExpression;
 import static interpreter.Util.keyword;
@@ -16,7 +16,7 @@ public class DefinedVariable implements Rule {
 
     @Override
     public boolean couldBeApplied(String line) {
-        return true;
+        return line.chars().allMatch(Character::isLetter);
     }
 
     @Override
@@ -28,7 +28,7 @@ public class DefinedVariable implements Rule {
                 return context.getSequence(line);
             }
         }
-        context.addException(new ParserError("Undefined variable '" + line + "'"));
+        context.addError(new UndefinedVariableError("Undefined variable '" + line + "'"));
         return emptyExpression();
     }
 

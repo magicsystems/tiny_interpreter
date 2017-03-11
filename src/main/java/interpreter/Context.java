@@ -2,6 +2,7 @@ package interpreter;
 
 
 import interpreter.error.IncompatibleTypeError;
+import interpreter.error.UndefinedVariableError;
 import interpreter.expression.SequenceExpression;
 import interpreter.error.ParserError;
 
@@ -13,7 +14,7 @@ import java.util.Map;
 public class Context {
     private Map<String, Double> variables = new HashMap<>();
     private Map<String, SequenceExpression> sequences = new HashMap<>();
-    private List<ParserError> exceptions = new ArrayList<>();
+    private List<ParserError> errors = new ArrayList<>();
     private List<String> output = new ArrayList<>();
 
     public Context(Context context) {
@@ -50,27 +51,31 @@ public class Context {
     }
 
     public boolean hasException() {
-        return !exceptions.isEmpty();
+        return !errors.isEmpty();
     }
 
     public boolean hasIncompatibleParseError() {
-        return !exceptions.isEmpty() && exceptions.get(0) instanceof IncompatibleTypeError;
+        return !errors.isEmpty() && errors.get(0) instanceof IncompatibleTypeError;
+    }
+
+    public boolean hasUndefinedVariableError() {
+        return !errors.isEmpty() && errors.get(0) instanceof UndefinedVariableError;
     }
 
     public void clearExceptions() {
-        exceptions.clear();
+        errors.clear();
     }
 
-    public void addException(ParserError pe) {
-        exceptions.add(pe);
+    public void addError(ParserError pe) {
+        errors.add(pe);
     }
 
-    public void addExceptions(List<ParserError> errors) {
-        exceptions.addAll(errors);
+    public void addErrors(List<ParserError> errors) {
+        this.errors.addAll(errors);
     }
 
-    public List<ParserError> getExceptions() {
-        return exceptions;
+    public List<ParserError> getErrors() {
+        return errors;
     }
 
     public void addOutPutString(String out) {

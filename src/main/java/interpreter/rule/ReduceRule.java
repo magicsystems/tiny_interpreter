@@ -7,7 +7,6 @@ import interpreter.expression.NumberExpression;
 import interpreter.expression.ReduceExpression;
 import interpreter.expression.SequenceExpression;
 import interpreter.parser.Parser;
-import interpreter.error.ParserError;
 import interpreter.parser.TwoArgsLambda;
 
 import static interpreter.Util.emptyNumberExpression;
@@ -31,8 +30,16 @@ public class ReduceRule implements Rule {
     @Override
     public Expression parse(Parser parser, String line, Context context) {
         String args = line.substring(START.length(), line.length() - 1);
-        int firstPosition = 0;
         Context localContext = new Context(context);
+        ReduceExpression expression = parseReduceExpression(args, localContext, parser);
+        if (localContext.hasException()) {
+            context.addErrors(localContext.getErrors());
+        }
+        return expression != null ? expression : emptyNumberExpression();
+    }
+
+    private static ReduceExpression parseReduceExpression(String args, Context localContext, Parser parser) {
+        int firstPosition = 0;
         while ((firstPosition = args.indexOf(",", firstPosition + 1)) != -1) {
             localContext.clearExceptions();
             String newLine = args.substring(0, firstPosition);
@@ -53,17 +60,15 @@ public class ReduceRule implements Rule {
                             firstPosition = args.length();
                             secondPosition = args.length();
                         }
+                    } else if (localContext.hasUndefinedVariableError()) {
+                        firstPosition = args.length();
+                        secondPosition = args.length();
                     }
                 }
             } else if (localContext.hasIncompatibleParseError()) {
                 firstPosition = args.length();
             }
         }
-        if (localContext.hasException()) {
-            context.addExceptions(localContext.getExceptions());
-        } else {
-            context.addException(new ParserError("Invalid syntax for reduce function '" + line + "'"));
-        }
-        return emptyNumberExpression();
+        return null;
     }
 }

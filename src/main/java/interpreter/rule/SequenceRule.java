@@ -6,9 +6,9 @@ import interpreter.expression.Expression;
 import interpreter.expression.NumberExpression;
 import interpreter.expression.Sequence;
 import interpreter.parser.Parser;
-import interpreter.error.ParserError;
 
 import static interpreter.Util.emptySequence;
+import static interpreter.Util.expressionExpected;
 import static interpreter.Util.expressionExpectedCheck;
 import static interpreter.Util.numberOfChars;
 
@@ -40,7 +40,7 @@ public class SequenceRule implements Rule {
         String newLine = line.substring(1, line.length() - 1);
         int firstComma = newLine.indexOf(",");
         if (firstComma == 0 || firstComma == newLine.length() - 1) {
-            context.addException(new ParserError("Expression expected"));
+            context.addError(expressionExpected());
             return emptySequence();
         } else {
             NumberExpression left = parser.numberExpression(context, newLine.substring(0, firstComma));

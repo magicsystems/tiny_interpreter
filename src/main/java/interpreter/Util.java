@@ -1,6 +1,6 @@
 package interpreter;
 
-import interpreter.error.ParserError;
+import interpreter.error.ExpressionExpectedError;
 import interpreter.statement.Statement;
 import interpreter.statement.NoOpStatement;
 import interpreter.expression.Expression;
@@ -72,16 +72,20 @@ public class Util {
         boolean endsWith = line.endsWith(right);
         if (!startsWith || !endsWith) {
             if (!startsWith) {
-                context.addException(expressionExpected(left));
+                context.addError(expressionExpected(left));
             } else {
-                context.addException(expressionExpected(right));
+                context.addError(expressionExpected(right));
             }
             return emptyNumberExpression();
         }
         return null;
     }
 
-    private static ParserError expressionExpected(String missing) {
-        return new ParserError("Expression expected '" + missing + "'");
+    private static ExpressionExpectedError expressionExpected(String missing) {
+        return new ExpressionExpectedError("Expression expected '" + missing + "'");
+    }
+
+    public static ExpressionExpectedError expressionExpected() {
+        return new ExpressionExpectedError("Expression expected");
     }
 }
