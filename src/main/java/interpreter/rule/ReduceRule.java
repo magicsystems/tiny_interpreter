@@ -33,24 +33,23 @@ public class ReduceRule implements Rule {
     public Expression parse(Parser parser, String line, Context context) {
         String args = line.substring(START.length(), line.length() - 1);
         Context localContext = new Context(context);
-        ReduceExpression expression = parseReduceExpression(args, localContext, parser);
+        ReduceExpression expression = parseReduceExpression(args, context, parser);
         if (expression != null) {
             return expression;
         } else {
-            if (localContext.hasErrors()) {
-                context.addErrors(localContext.getErrors());
-            } else {
+            if (!context.hasErrors()) {
                 context.addError(new ParserError("Invalid syntax for reduce function"));
             }
             return emptyNumberExpression();
         }
     }
 
-    private static ReduceExpression parseReduceExpression(String args, Context localContext, Parser parser) {
+    private static ReduceExpression parseReduceExpression(String args, Context context, Parser parser) {
         int firstPosition = 0;
         if(numberOfChars(args, ',') < 2) {
             return null;
         }
+        Context localContext = new Context(context);
         while ((firstPosition = args.indexOf(",", firstPosition + 1)) != -1) {
             localContext.clearExceptions();
             String newLine = args.substring(0, firstPosition);
@@ -68,15 +67,18 @@ public class ReduceRule implements Rule {
                             return new ReduceExpression(sequence, expression,
                                     lambda.getFirstIdentifier(), lambda.getSecondIdentifier(), lambda.getException());
                         } else {
+                            context.addErrors(localContext.getErrors());
                             firstPosition = args.length();
                             secondPosition = args.length();
                         }
                     } else if (localContext.hasUndefinedVariableError()) {
+                        context.addErrors(localContext.getErrors());
                         firstPosition = args.length();
                         secondPosition = args.length();
                     }
                 }
             } else if (localContext.hasIncompatibleParseError() || localContext.hasUndefinedVariableError()) {
+                context.addErrors(localContext.getErrors());
                 firstPosition = args.length();
             }
         }
