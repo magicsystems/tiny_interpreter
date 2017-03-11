@@ -7,6 +7,7 @@ import interpreter.expression.Identifier;
 import interpreter.parser.Parser;
 
 import static interpreter.Util.emptyExpression;
+import static interpreter.Util.isValidIdentifier;
 import static interpreter.Util.keyword;
 
 /**
@@ -16,7 +17,7 @@ public class DefinedVariable implements Rule {
 
     @Override
     public boolean couldBeApplied(String line) {
-        return line.chars().allMatch(Character::isLetter);
+        return isValidIdentifier(line);
     }
 
     @Override

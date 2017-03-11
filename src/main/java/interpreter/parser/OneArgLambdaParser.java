@@ -26,7 +26,7 @@ public class OneArgLambdaParser {
                 return new OneArgLambda(expression, identifier.getName());
             }
         } else {
-            context.addError(new ParserError("Invalid one arg lambda syntax '" + line + "'"));
+            context.addError(new ParserError("There should be '->' in '" + line + "'"));
         }
         return emptyOneArgLambda();
     }

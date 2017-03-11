@@ -18,7 +18,7 @@ public class Result {
 
     public List<ParserError> getAllErrorsList() {
         ArrayList<ParserError> errorArrayList = new ArrayList<>();
-        errors.values().forEach(errorArrayList::addAll);
+        getErrors().values().forEach(errorArrayList::addAll);
         return errorArrayList;
     }
 

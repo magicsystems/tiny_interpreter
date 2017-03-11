@@ -34,7 +34,7 @@ public class TwoArgsLambdaParser {
                 context.addError(new ParserError("Invalid declaration for two identifiers '" + identifierStr + "'"));
             }
         } else {
-            context.addError(new ParserError("Invalid two args lambda syntax '" + line + "'"));
+            context.addError(new ParserError("There should be '->' in '" + line + "'"));
         }
         return emptyTwoArgsLambda();
     }

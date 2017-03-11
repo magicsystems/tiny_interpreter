@@ -76,6 +76,7 @@ public class InterpreterTest {
 
     private static final String NESTED_MAP_WITH_VARIABLE_OPERATION_PROGRAM =
             "var n = 5\n" +
+                    "\n" +
                     "out reduce(map({1,n}, x -> x + 1), 1, x y -> x * y)";
 
     @Test
@@ -106,5 +107,4 @@ public class InterpreterTest {
         assertThat(result.getAllErrorsList(), empty());
         assertThat(result.getOutput(), equalTo(output));
     }
-
 }

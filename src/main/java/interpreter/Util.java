@@ -81,6 +81,10 @@ public class Util {
         return null;
     }
 
+    public static boolean isValidIdentifier(String line) {
+        return line.chars().allMatch(Character::isLetter);
+    }
+
     private static ExpressionExpectedError expressionExpected(String missing) {
         return new ExpressionExpectedError("Expression expected '" + missing + "'");
     }

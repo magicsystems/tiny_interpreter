@@ -2,7 +2,11 @@ package interpreter.parser;
 
 
 import interpreter.Context;
+import interpreter.error.ParserError;
 import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
@@ -60,6 +64,7 @@ public class ParserErrorTest {
         checkError("reduce({1,4}, 1 x y -> x+1)", "Invalid syntax for reduce function");
         checkError("reduce({1,4} 1 x y -> x+1)", "Invalid syntax for reduce function");
         checkError("reduce(sec, 1, x y -> x+1)", "Undefined variable 'sec'");
+        checkError("reduce({1,5}, 1, x y > x+1)", "There should be '->' in 'x y > x+1'");
     }
 
     @Test
@@ -68,13 +73,19 @@ public class ParserErrorTest {
         checkError("map({1,4}, f -> f+ )", "Expression expected");
     }
 
-    private static void checkError(String line, String exception) {
+    @Test
+    public void testMapsWithInvalidLambda() {
+        checkError("map({1,5}, 1, x y -> x+1)", "Invalid identifier '1, x y'",
+                "Undefined variable 'x'");
+    }
+
+    private static void checkError(String line, String... exceptions) {
         Parser parser = new Parser();
         Context context = new Context();
         parser.expression(context, line);
         assertThat(context.hasErrors(), equalTo(true));
-        assertThat(context.getErrors(), hasSize(1));
-        assertThat(context.getErrors().get(0).getMessage(),
-                equalTo(exception));
+        assertThat(context.getErrors(), hasSize(exceptions.length));
+        assertThat(context.getErrors().stream().map(ParserError::getMessage).collect(Collectors.toList()),
+                equalTo(Arrays.asList(exceptions)));
     }
 }

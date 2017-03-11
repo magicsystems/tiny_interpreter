@@ -4,13 +4,14 @@ import interpreter.Context;
 import interpreter.error.ParserError;
 import interpreter.expression.Identifier;
 
+import static interpreter.Util.isValidIdentifier;
 import static interpreter.Util.keyword;
 
 
 public class IdentifierParser {
 
     public Identifier parseLambdaParameter(String line, Context context) {
-        if (!keyword(line)) {
+        if (!keyword(line) && isValidIdentifier(line)) {
             return new Identifier(line);
         }
         return errorResponse(context, "Invalid identifier '" + line + "'");
@@ -20,7 +21,7 @@ public class IdentifierParser {
         if (!keyword(line)) {
             if (context.hasNumericVariable(line) || context.hasSequence(line)) {
                 return errorResponse(context, "Variable '" + line + "' already defined in the current context");
-            } else {
+            } else if (isValidIdentifier(line)) {
                 return new Identifier(line);
             }
         }
