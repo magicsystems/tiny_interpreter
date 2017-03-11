@@ -11,6 +11,7 @@ import interpreter.parser.Parser;
 import interpreter.parser.TwoArgsLambda;
 
 import static interpreter.Util.emptyNumberExpression;
+import static interpreter.Util.numberOfChars;
 
 
 /**
@@ -47,6 +48,9 @@ public class ReduceRule implements Rule {
 
     private static ReduceExpression parseReduceExpression(String args, Context localContext, Parser parser) {
         int firstPosition = 0;
+        if(numberOfChars(args, ',') < 2) {
+            return null;
+        }
         while ((firstPosition = args.indexOf(",", firstPosition + 1)) != -1) {
             localContext.clearExceptions();
             String newLine = args.substring(0, firstPosition);

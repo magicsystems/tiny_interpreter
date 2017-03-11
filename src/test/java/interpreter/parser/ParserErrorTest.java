@@ -54,6 +54,12 @@ public class ParserErrorTest {
     public void testReduceErrors() {
         checkError("reduce({1,4}, r, x y -> x+1)", "Undefined variable 'r'");
         checkError("reduce({1,4}, 1 x y -> x+1)", "Invalid syntax for reduce function");
+        checkError("reduce({1,4} 1 x y -> x+1)", "Invalid syntax for reduce function");
+    }
+
+    @Test
+    public void testMapErrors() {
+        checkError("map({1,4} f -> f+ 1)", "Invalid syntax for map function");
     }
 
     private static void checkError(String line, String exception) {

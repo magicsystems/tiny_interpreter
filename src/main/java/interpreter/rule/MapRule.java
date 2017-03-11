@@ -45,10 +45,10 @@ public class MapRule implements Rule {
                 position = args.length();
             }
         }
-        if(localContext.hasException()) {
+        if(localContext.hasIncompatibleParseError() || localContext.hasUndefinedVariableError()) {
             context.addErrors(localContext.getErrors());
         } else {
-            context.addError(new ParserError("Invalid syntax for map function '" + line + "'"));
+            context.addError(new ParserError("Invalid syntax for map function"));
         }
         return emptySequence();
     }
