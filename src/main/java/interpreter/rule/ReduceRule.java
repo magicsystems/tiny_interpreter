@@ -32,7 +32,6 @@ public class ReduceRule implements Rule {
     @Override
     public Expression parse(Parser parser, String line, Context context) {
         String args = line.substring(START.length(), line.length() - 1);
-        Context localContext = new Context(context);
         ReduceExpression expression = parseReduceExpression(args, context, parser);
         if (expression != null) {
             return expression;
