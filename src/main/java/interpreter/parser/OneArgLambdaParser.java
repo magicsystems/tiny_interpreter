@@ -13,12 +13,13 @@ import static interpreter.Util.emptyOneArgLambda;
 public class OneArgLambdaParser {
 
     public OneArgLambda parse(Parser parser, Context context, String line) {
-        String[] args = line.split("->");
-        if (args.length == 2) {
-            Identifier identifier = parser.parseLambdaIdentifier(context, args[0]);
+        int firstLambda = line.indexOf("->");
+        if (firstLambda != -1) {
+            Identifier identifier = parser.parseLambdaIdentifier(context, line.substring(0, firstLambda));
             Context localContext = new Context();
             localContext.putNumericVariable(identifier.getName(), 1.0);
-            NumberExpression expression = parser.numberExpression(localContext, args[1]);
+            NumberExpression expression = parser.numberExpression(localContext,
+                    line.substring(firstLambda + 2, line.length()));
             if (localContext.hasErrors()) {
                 context.addErrors(localContext.getErrors());
             } else {

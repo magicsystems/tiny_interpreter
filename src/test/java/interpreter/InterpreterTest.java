@@ -91,6 +91,15 @@ public class InterpreterTest {
         runProgram(REDUCE_IN_LAMBDA_OPERATION_PROGRAM, Arrays.asList("27.0"));
     }
 
+
+    private static final String REDUCE_IN_LAMBDA_FOR_MAP_PROGRAM =
+            "out map({1, 2}, x -> x * reduce({1,5}, 1, y z -> y * z))";
+
+    @Test
+    public void testReduceInLambdaForMap() {
+        runProgram(REDUCE_IN_LAMBDA_FOR_MAP_PROGRAM, Arrays.asList("{120.0, 240.0}"));
+    }
+
     private static void runProgram(String program, List<String> output) {
         Interpreter interpreter = new Interpreter();
         Result result = interpreter.execute(program);

@@ -65,6 +65,7 @@ public class ParserErrorTest {
     @Test
     public void testMapErrors() {
         checkError("map({1,4} f -> f+ 1)", "Invalid syntax for map function");
+        checkError("map({1,4}, f -> f+ )", "Expression expected");
     }
 
     private static void checkError(String line, String exception) {

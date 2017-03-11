@@ -39,15 +39,15 @@ public class MapRule implements Rule {
                 if (!localContext.hasErrors()) {
                     return new MapExpression(sequence, lambda.getIdentifier(), lambda.getExpression());
                 } else {
+                    context.addErrors(localContext.getErrors());
                     position = args.length();
                 }
-            } else if (localContext.hasIncompatibleParseError()) {
+            } else if (localContext.hasIncompatibleParseError()  || localContext.hasUndefinedVariableError()) {
+                context.addErrors(localContext.getErrors());
                 position = args.length();
             }
         }
-        if(localContext.hasIncompatibleParseError() || localContext.hasUndefinedVariableError()) {
-            context.addErrors(localContext.getErrors());
-        } else {
+        if(!context.hasErrors()) {
             context.addError(new ParserError("Invalid syntax for map function"));
         }
         return emptySequence();
