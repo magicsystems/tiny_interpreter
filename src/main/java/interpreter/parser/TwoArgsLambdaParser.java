@@ -26,7 +26,7 @@ public class TwoArgsLambdaParser {
                 NumberExpression expression = parser.numberExpression(localContext, line.substring(firstLambda + 2,
                         line.length()));
                 if (localContext.hasException()) {
-                    context.addException(localContext.getExceptions().get(0));
+                    context.addExceptions(localContext.getExceptions());
                 }
                 return new TwoArgsLambda(expression,
                         identifier1.getName(), identifier2.getName());

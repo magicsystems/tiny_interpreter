@@ -65,6 +65,10 @@ public class Context {
         exceptions.add(pe);
     }
 
+    public void addExceptions(List<ParserError> errors) {
+        exceptions.addAll(errors);
+    }
+
     public List<ParserError> getExceptions() {
         return exceptions;
     }

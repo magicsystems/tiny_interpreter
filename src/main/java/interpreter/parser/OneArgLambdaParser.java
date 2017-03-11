@@ -20,7 +20,7 @@ public class OneArgLambdaParser {
             localContext.putNumericVariable(identifier.getName(), 1.0);
             NumberExpression expression = parser.numberExpression(localContext, args[1]);
             if (localContext.hasException()) {
-                context.addException(localContext.getExceptions().get(0));
+                context.addExceptions(localContext.getExceptions());
             } else {
                 return new OneArgLambda(expression, identifier.getName());
             }

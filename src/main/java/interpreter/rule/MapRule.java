@@ -47,7 +47,7 @@ public class MapRule implements Rule {
             }
         }
         if(localContext.hasException()) {
-            context.addException(localContext.getExceptions().get(0));
+            context.addExceptions(localContext.getExceptions());
         } else {
             context.addException(new ParserError("Invalid syntax for map function '" + line + "'"));
         }

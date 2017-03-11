@@ -81,7 +81,6 @@ public class InterpreterErrorTest {
                 "Expression expected");
     }
 
-
     private static final String MISSING_TWO_ARGS_PROGRAM =
             "var c  = a + b";
 
@@ -90,6 +89,16 @@ public class InterpreterErrorTest {
         runProgramWithError(MISSING_TWO_ARGS_PROGRAM,
                 "Undefined variable 'a'", "Undefined variable 'b'");
     }
+
+    private static final String MISSING_TWO_ARGS_IN_LAMBDA =
+            "out reduce({1,4}, 1, x y -> x+z + b)";
+
+    @Test
+    public void testTwoErrorsInReduce() {
+        runProgramWithError(MISSING_TWO_ARGS_IN_LAMBDA,
+                "Undefined variable 'z'", "Undefined variable 'b'");
+    }
+
 
     private static void runProgramWithError(String program, String... errors) {
         Interpreter interpreter = new Interpreter();
