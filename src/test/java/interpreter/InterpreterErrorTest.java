@@ -73,6 +73,14 @@ public class InterpreterErrorTest {
                 "Undefined variable 'y'");
     }
 
+    private static final String EXPRESSION_EXPECTED_IN_LAMBDA = "out reduce({1,4}, 1, x y -> x+)";
+
+    @Test
+    public void testExpressionExpectedInLambda() {
+        runProgramWithError(EXPRESSION_EXPECTED_IN_LAMBDA,
+                "Expression expected");
+    }
+
     private static void runProgramWithError(String program, String... errors) {
         Interpreter interpreter = new Interpreter();
         Result result = interpreter.execute(program);

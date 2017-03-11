@@ -51,6 +51,7 @@ public class ReduceRule implements Rule {
                                     lambda.getFirstIdentifier(), lambda.getSecondIdentifier(), lambda.getException());
                         } else {
                             firstPosition = args.length();
+                            secondPosition = args.length();
                         }
                     }
                 }

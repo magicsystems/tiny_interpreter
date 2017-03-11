@@ -9,6 +9,8 @@ import interpreter.parser.Parser;
 import interpreter.error.ParserError;
 
 import static interpreter.Util.emptySequence;
+import static interpreter.Util.expressionExpectedCheck;
+import static interpreter.Util.numberOfChars;
 
 /**
  * Rule for sequence expressions:
@@ -19,21 +21,32 @@ import static interpreter.Util.emptySequence;
 public class SequenceRule implements Rule {
     @Override
     public boolean couldBeApplied(String line) {
-        return line.startsWith("{") && line.endsWith("}");
+        boolean startsWith = line.startsWith("{");
+        boolean endsWith = line.endsWith("}");
+        if (startsWith && endsWith) {
+            return true;
+        } else if (startsWith || endsWith) {
+            return numberOfChars(line, '{') != numberOfChars(line, '}');
+        }
+        return false;
     }
 
     @Override
     public Expression parse(Parser parser, String line, Context context) {
+        Expression expression = expressionExpectedCheck(line, "{", "}", context);
+        if (expression != null) {
+            return expression;
+        }
         String newLine = line.substring(1, line.length() - 1);
         int firstComma = newLine.indexOf(",");
-        if (firstComma != -1) {
+        if (firstComma == 0 || firstComma == newLine.length() - 1) {
+            context.addException(new ParserError("Expression expected"));
+            return emptySequence();
+        } else {
             NumberExpression left = parser.numberExpression(context, newLine.substring(0, firstComma));
             NumberExpression right = parser.numberExpression(context,
                     newLine.substring(firstComma + 1, newLine.length()));
             return new Sequence(left, right);
-        } else {
-            context.addException(new ParserError("Invalid sequence '" + newLine + ""));
-            return emptySequence();
         }
     }
 }

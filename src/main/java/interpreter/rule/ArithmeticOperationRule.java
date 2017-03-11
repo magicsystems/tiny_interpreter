@@ -12,7 +12,7 @@ import static interpreter.Util.emptyNumberExpression;
 
 /**
  * Rule for {@link interpreter.expression.Operation} application.
- * <p>
+ * <p/>
  * Will be applied only if operation is not within round brackets.
  */
 public class ArithmeticOperationRule implements Rule {
@@ -44,13 +44,13 @@ public class ArithmeticOperationRule implements Rule {
     @Override
     public Expression parse(Parser parser, String line, Context context) {
         int position = line.indexOf(operation.getChar());
-        if (position != -1 && position < line.length()) {
+        if (position == 0 || position == line.length() - 1) {
+            context.addException(new ParserError("Expression expected"));
+            return emptyNumberExpression();
+        } else {
             NumberExpression left = parser.numberExpression(context, line.substring(0, position));
             NumberExpression right = parser.numberExpression(context, line.substring(position + 1, line.length()));
             return new ArithmeticExpression(left, right, operation);
-        } else {
-            context.addException(new ParserError("Couldn't apply arithmetic operation to '" + line + "'"));
-            return emptyNumberExpression();
         }
     }
 }

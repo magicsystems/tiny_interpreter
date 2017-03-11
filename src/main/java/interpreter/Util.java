@@ -1,5 +1,6 @@
 package interpreter;
 
+import interpreter.error.ParserError;
 import interpreter.statement.Statement;
 import interpreter.statement.NoOpStatement;
 import interpreter.expression.Expression;
@@ -62,4 +63,25 @@ public class Util {
         return NO_OP_TWO_ARG_LAMBDA;
     }
 
+    public static long numberOfChars(String str, char symbol) {
+        return str.chars().filter(x -> x == symbol).count();
+    }
+
+    public static Expression expressionExpectedCheck(String line, String left, String right, Context context) {
+        boolean startsWith = line.startsWith(left);
+        boolean endsWith = line.endsWith(right);
+        if (!startsWith || !endsWith) {
+            if (!startsWith) {
+                context.addException(expressionExpected(left));
+            } else {
+                context.addException(expressionExpected(right));
+            }
+            return emptyNumberExpression();
+        }
+        return null;
+    }
+
+    private static ParserError expressionExpected(String missing) {
+        return new ParserError("Expression expected '" + missing + "'");
+    }
 }

@@ -3,29 +3,38 @@ package interpreter.rule;
 import interpreter.Context;
 import interpreter.expression.BracketExpression;
 import interpreter.expression.Expression;
-import interpreter.expression.NumberExpression;
 import interpreter.parser.Parser;
+
+import static interpreter.Util.expressionExpectedCheck;
+import static interpreter.Util.numberOfChars;
 
 /**
  * Rule for recognition expressions inside brackets:
- * <p>
+ * <p/>
  * (expr)
  */
 public class BracketRule implements Rule {
+
     @Override
     public boolean couldBeApplied(String line) {
-        if (line.startsWith("(") && line.endsWith(")")) {
+        boolean startsWith = line.startsWith("(");
+        boolean endsWith = line.endsWith(")");
+        if (startsWith && endsWith) {
             int nextOpeningBracket = line.indexOf("(", 1);
             int nextClosingBracket = line.indexOf(")");
             return nextOpeningBracket <= nextClosingBracket;
         }
-        return false;
+        return (startsWith || endsWith) && numberOfChars(line, '(') != numberOfChars(line, ')');
     }
 
     @Override
     public Expression parse(Parser parser, String line, Context context) {
+        Expression expression = expressionExpectedCheck(line, "(", ")", context);
+        if (expression != null) {
+            return expression;
+        }
         String newLine = line.substring(1, line.length() - 1);
-        NumberExpression expression = parser.numberExpression(context, newLine);
-        return new BracketExpression(expression);
+        return new BracketExpression(parser.numberExpression(context, newLine));
     }
+
 }

@@ -58,7 +58,6 @@ public class ParseExpressionTest {
         checkNumberFunctionResult("(2^3 + (35 - 5) * (19 +1))", 608.0);
     }
 
-
     @Test
     public void testParseLambdaWithoutErrors() {
         Parser parser = new Parser();
@@ -93,6 +92,7 @@ public class ParseExpressionTest {
         context.putNumericVariable("y", 15.0);
         assertThat(lambda.getException().value(context), equalTo(27.0));
     }
+
 
     private static void checkNumberFunctionResult(String function, double result) {
         Parser parser = new Parser();
