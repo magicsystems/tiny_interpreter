@@ -2,6 +2,7 @@ package interpreter.rule;
 
 
 import interpreter.Context;
+import interpreter.error.ParserError;
 import interpreter.expression.Expression;
 import interpreter.expression.NumberExpression;
 import interpreter.expression.ReduceExpression;
@@ -32,10 +33,16 @@ public class ReduceRule implements Rule {
         String args = line.substring(START.length(), line.length() - 1);
         Context localContext = new Context(context);
         ReduceExpression expression = parseReduceExpression(args, localContext, parser);
-        if (localContext.hasException()) {
-            context.addErrors(localContext.getErrors());
+        if (expression != null) {
+            return expression;
+        } else {
+            if (localContext.hasException()) {
+                context.addErrors(localContext.getErrors());
+            } else {
+                context.addError(new ParserError("Invalid syntax for reduce function"));
+            }
+            return emptyNumberExpression();
         }
-        return expression != null ? expression : emptyNumberExpression();
     }
 
     private static ReduceExpression parseReduceExpression(String args, Context localContext, Parser parser) {
