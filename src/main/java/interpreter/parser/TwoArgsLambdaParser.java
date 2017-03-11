@@ -25,7 +25,7 @@ public class TwoArgsLambdaParser {
                 localContext.putNumericVariable(identifier2.getName(), 1.0);
                 NumberExpression expression = parser.numberExpression(localContext, line.substring(firstLambda + 2,
                         line.length()));
-                if (localContext.hasException()) {
+                if (localContext.hasErrors()) {
                     context.addErrors(localContext.getErrors());
                 }
                 return new TwoArgsLambda(expression,

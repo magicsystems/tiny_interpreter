@@ -32,22 +32,24 @@ public class ParserErrorTest {
         Parser parser = new Parser();
         Context context = new Context();
         parser.parseTwoArgsLambda(context, "x c -> x + t*7");
-        assertThat(context.hasException(), equalTo(true));
+        assertThat(context.hasErrors(), equalTo(true));
         assertThat(context.getErrors(), hasSize(1));
         assertThat(context.getErrors().get(0).getMessage(),
                 equalTo("Undefined variable 't'"));
     }
+
     @Test
     public void testMissingElements() {
         checkError("()", "Expression expected");
-        checkError("(3 + 1", "Expression expected ')'");
-        checkError("3 + (1*4))", "Expression expected '('");
+        checkError("( 3 + 1", "Expression expected ')'");
+        checkError("3 + (1*4) )", "Expression expected '('");
         checkError("{1 ,5", "Expression expected '}'");
         checkError("{1,}", "Expression expected");
+        checkError("{1,  }", "Expression expected");
         checkError("{13}", "Expression expected");
         checkError("{}", "Expression expected");
-        checkError("{,}", "Expression expected");
-        checkError("{,46}", "Expression expected");
+        checkError("{ ,}", "Expression expected");
+        checkError("{,46 }", "Expression expected");
         checkError("1 +", "Expression expected");
         checkError("  + 32*5", "Expression expected");
     }
@@ -69,7 +71,7 @@ public class ParserErrorTest {
         Parser parser = new Parser();
         Context context = new Context();
         parser.expression(context, line);
-        assertThat(context.hasException(), equalTo(true));
+        assertThat(context.hasErrors(), equalTo(true));
         assertThat(context.getErrors(), hasSize(1));
         assertThat(context.getErrors().get(0).getMessage(),
                 equalTo(exception));

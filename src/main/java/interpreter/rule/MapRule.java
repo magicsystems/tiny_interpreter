@@ -33,10 +33,10 @@ public class MapRule implements Rule {
             localContext.clearExceptions();
             String newLine = args.substring(0, position);
             SequenceExpression sequence = parser.sequenceExpression(localContext, newLine);
-            if (!localContext.hasException()) {
+            if (!localContext.hasErrors()) {
                 newLine = args.substring(position + 1, args.length());
                 OneArgLambda lambda = parser.parseOneArgLambda(localContext, newLine);
-                if (!localContext.hasException()) {
+                if (!localContext.hasErrors()) {
                     return new MapExpression(sequence, lambda.getIdentifier(), lambda.getExpression());
                 } else {
                     position = args.length();

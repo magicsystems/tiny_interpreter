@@ -96,7 +96,7 @@ public class Parser {
     private <T> T typedExpression(Context context, String line,
                                   Class<T> type, Supplier<T> empty, String requiredType) {
         Expression expression = expression(context, line);
-        if (!context.hasException()) {
+        if (!context.hasErrors()) {
             if (type.isAssignableFrom(expression.getClass())) {
                 return (T) expression;
             } else {

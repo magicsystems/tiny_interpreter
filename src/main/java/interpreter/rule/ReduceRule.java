@@ -37,7 +37,7 @@ public class ReduceRule implements Rule {
         if (expression != null) {
             return expression;
         } else {
-            if (localContext.hasException()) {
+            if (localContext.hasErrors()) {
                 context.addErrors(localContext.getErrors());
             } else {
                 context.addError(new ParserError("Invalid syntax for reduce function"));
@@ -55,16 +55,16 @@ public class ReduceRule implements Rule {
             localContext.clearExceptions();
             String newLine = args.substring(0, firstPosition);
             SequenceExpression sequence = parser.sequenceExpression(localContext, newLine);
-            if (!localContext.hasException()) {
+            if (!localContext.hasErrors()) {
                 int secondPosition = firstPosition;
                 while ((secondPosition = args.indexOf(",", secondPosition + 1)) != -1) {
                     localContext.clearExceptions();
                     newLine = args.substring(firstPosition + 1, secondPosition);
                     NumberExpression expression = parser.numberExpression(localContext, newLine);
-                    if (!localContext.hasException()) {
+                    if (!localContext.hasErrors()) {
                         newLine = args.substring(secondPosition + 1, args.length());
                         TwoArgsLambda lambda = parser.parseTwoArgsLambda(localContext, newLine);
-                        if (!localContext.hasException()) {
+                        if (!localContext.hasErrors()) {
                             return new ReduceExpression(sequence, expression,
                                     lambda.getFirstIdentifier(), lambda.getSecondIdentifier(), lambda.getException());
                         } else {

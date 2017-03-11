@@ -37,7 +37,7 @@ public class SequenceRule implements Rule {
         if (expression != null) {
             return expression;
         }
-        String newLine = line.substring(1, line.length() - 1);
+        String newLine = line.substring(1, line.length() - 1).trim();
         int firstComma = newLine.indexOf(",");
         if (firstComma <= 0 || firstComma == newLine.length() - 1) {
             context.addError(expressionExpected());

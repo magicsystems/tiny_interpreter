@@ -33,7 +33,7 @@ public class Interpreter {
                 continue;
             }
             Statement statement = parser.statement(context, line);
-            if (context.hasException()) {
+            if (context.hasErrors()) {
                 errors.put(line, new ArrayList<>(context.getErrors()));
                 context.clearExceptions();
             } else {

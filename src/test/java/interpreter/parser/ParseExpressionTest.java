@@ -20,7 +20,7 @@ public class ParseExpressionTest {
         Parser parser = new Parser();
         Context context = new Context();
         SequenceExpression sequence = parser.sequenceExpression(context, "{4, 6}");
-        assertThat(context.hasException(), equalTo(false));
+        assertThat(context.hasErrors(), equalTo(false));
         List<Double> list = Util.sequenceToList(sequence, context);
         assertThat(list, equalTo(Arrays.asList(4.0, 5.0, 6.0)));
     }
@@ -46,14 +46,14 @@ public class ParseExpressionTest {
         Parser parser = new Parser();
         Context emptyContext = new Context();
         SequenceExpression sequenceExpression = parser.sequenceExpression(emptyContext, "{1, 6}");
-        assertThat(emptyContext.hasException(), equalTo(false));
+        assertThat(emptyContext.hasErrors(), equalTo(false));
         emptyContext.putSequenceVariable("sequence", sequenceExpression);
         NumberExpression expression = parser.numberExpression(emptyContext, "reduce(sequence, 1, x y -> x * y)");
-        assertThat(emptyContext.hasException(), equalTo(false));
+        assertThat(emptyContext.hasErrors(), equalTo(false));
         assertThat(expression.value(emptyContext), equalTo(720.0));
 
         expression = parser.numberExpression(emptyContext, "reduce(sequence, 1, a e -> (a * e))");
-        assertThat(emptyContext.hasException(), equalTo(false));
+        assertThat(emptyContext.hasErrors(), equalTo(false));
         assertThat(expression.value(emptyContext), equalTo(720.0));
 
     }
@@ -70,7 +70,7 @@ public class ParseExpressionTest {
         Context context = new Context();
         context.putNumericVariable("i", 2.0);
         parser.expression(context, "(-1)^i / (2 * i + 1)");
-        assertThat(context.hasException(), equalTo(false));
+        assertThat(context.hasErrors(), equalTo(false));
     }
 
     @Test
@@ -79,7 +79,7 @@ public class ParseExpressionTest {
         Context emptyContext = new Context();
         emptyContext.putNumericVariable("n", 3.0);
         SequenceExpression expression = parser.sequenceExpression(emptyContext, "map({1, n}, i -> 2 ^ i + 1)");
-        assertThat(emptyContext.hasException(), equalTo(false));
+        assertThat(emptyContext.hasErrors(), equalTo(false));
         List<Double> sequence = Util.sequenceToList(expression, emptyContext);
         assertThat(sequence, equalTo(Arrays.asList(3.0, 5.0, 9.0)));
     }
@@ -90,7 +90,7 @@ public class ParseExpressionTest {
         Parser parser = new Parser();
         Context emptyContext = new Context();
         TwoArgsLambda lambda = parser.parseTwoArgsLambda(emptyContext, " x y -> x + y");
-        assertThat(emptyContext.hasException(), equalTo(false));
+        assertThat(emptyContext.hasErrors(), equalTo(false));
         assertThat(lambda.getFirstIdentifier(), equalTo("x"));
         assertThat(lambda.getSecondIdentifier(), equalTo("y"));
         Context context = new Context();
@@ -104,7 +104,7 @@ public class ParseExpressionTest {
         Parser parser = new Parser();
         Context context = new Context();
         NumberExpression expression = parser.numberExpression(context, function);
-        assertThat(context.hasException(), equalTo(false));
+        assertThat(context.hasErrors(), equalTo(false));
         assertThat(expression.value(context), equalTo(result));
     }
 

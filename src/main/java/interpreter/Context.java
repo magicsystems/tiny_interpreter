@@ -50,7 +50,7 @@ public class Context {
         return sequences.containsKey(variable);
     }
 
-    public boolean hasException() {
+    public boolean hasErrors() {
         return !errors.isEmpty();
     }
 
