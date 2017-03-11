@@ -76,7 +76,7 @@ public class ReduceRule implements Rule {
                         secondPosition = args.length();
                     }
                 }
-            } else if (localContext.hasIncompatibleParseError()) {
+            } else if (localContext.hasIncompatibleParseError() || localContext.hasUndefinedVariableError()) {
                 firstPosition = args.length();
             }
         }

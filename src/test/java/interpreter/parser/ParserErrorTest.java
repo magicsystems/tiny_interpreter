@@ -57,6 +57,7 @@ public class ParserErrorTest {
         checkError("reduce({1,4}, r, x y -> x+1)", "Undefined variable 'r'");
         checkError("reduce({1,4}, 1 x y -> x+1)", "Invalid syntax for reduce function");
         checkError("reduce({1,4} 1 x y -> x+1)", "Invalid syntax for reduce function");
+        checkError("reduce(sec, 1, x y -> x+1)", "Undefined variable 'sec'");
     }
 
     @Test
