@@ -39,7 +39,7 @@ public class SequenceRule implements Rule {
         }
         String newLine = line.substring(1, line.length() - 1);
         int firstComma = newLine.indexOf(",");
-        if (firstComma == 0 || firstComma == newLine.length() - 1) {
+        if (firstComma <= 0 || firstComma == newLine.length() - 1) {
             context.addError(expressionExpected());
             return emptySequence();
         } else {

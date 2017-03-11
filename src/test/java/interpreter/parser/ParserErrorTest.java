@@ -37,13 +37,15 @@ public class ParserErrorTest {
         assertThat(context.getErrors().get(0).getMessage(),
                 equalTo("Undefined variable 't'"));
     }
-
     @Test
     public void testMissingElements() {
+        checkError("()", "Expression expected");
         checkError("(3 + 1", "Expression expected ')'");
         checkError("3 + (1*4))", "Expression expected '('");
         checkError("{1 ,5", "Expression expected '}'");
         checkError("{1,}", "Expression expected");
+        checkError("{13}", "Expression expected");
+        checkError("{}", "Expression expected");
         checkError("{,}", "Expression expected");
         checkError("{,46}", "Expression expected");
         checkError("1 +", "Expression expected");

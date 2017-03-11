@@ -5,6 +5,8 @@ import interpreter.expression.BracketExpression;
 import interpreter.expression.Expression;
 import interpreter.parser.Parser;
 
+import static interpreter.Util.emptyNumberExpression;
+import static interpreter.Util.expressionExpected;
 import static interpreter.Util.expressionExpectedCheck;
 import static interpreter.Util.numberOfChars;
 
@@ -34,7 +36,12 @@ public class BracketRule implements Rule {
             return expression;
         }
         String newLine = line.substring(1, line.length() - 1);
-        return new BracketExpression(parser.numberExpression(context, newLine));
+        if (!newLine.isEmpty()) {
+            return new BracketExpression(parser.numberExpression(context, newLine));
+        } else {
+            context.addError(expressionExpected());
+            return emptyNumberExpression();
+        }
     }
 
 }
