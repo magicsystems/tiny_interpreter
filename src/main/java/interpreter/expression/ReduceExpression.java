@@ -31,7 +31,10 @@ public class ReduceExpression implements NumberExpression {
         DoubleStream stream = sequence.stream(context);
         double identityValue = identity.value(context);
         return stream.parallel().reduce(identityValue, (x, y) -> {
-           Object[] array = new Object[4];
+            if (Thread.currentThread().isInterrupted()) {
+                throw new RuntimeException("Reduce execution is interrupted");
+            }
+            Object[] array = new Object[4];
             array[0] = firstIdentifier;
             array[1] = x;
             array[2] = secondIdentifier;
@@ -43,9 +46,8 @@ public class ReduceExpression implements NumberExpression {
     @Override
     public double lambdaValue(Object[] array) {
         Context context = new Context();
-        for (int i = 0; i < array.length; i+=2) {
-            context.putNumericVariable((String)array[i], (Double)array[i + 1]);
-
+        for (int i = 0; i < array.length; i += 2) {
+            context.putNumericVariable((String) array[i], (Double) array[i + 1]);
         }
         return value(context);
     }

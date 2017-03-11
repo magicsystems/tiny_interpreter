@@ -20,7 +20,7 @@ import java.util.*;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 /**
@@ -35,7 +35,7 @@ public class Editor extends JFrame {
     private final Interpreter interpreter;
     private final Highlighter.HighlightPainter painter;
     private final ExecutorService backgroundExecutor = Executors.newSingleThreadExecutor();
-    private final AtomicReference<Runnable> lastTask = new AtomicReference<>();
+    private volatile Future<?> currentTask = null;
 
     private volatile Map<Range, String> errorsMap = new HashMap<>();
 
@@ -71,13 +71,10 @@ public class Editor extends JFrame {
 
     public void onProgramTextChanged() {
         String programText = programTextComponent.getText();
-        lastTask.set(() -> executeOnProgramChange(programText));
-        backgroundExecutor.execute(() -> {
-            Runnable task = lastTask.getAndSet(null);
-            if (task != null) {
-                task.run();
-            }
-        });
+        if (currentTask != null) {
+            currentTask.cancel(true);
+        }
+        currentTask = backgroundExecutor.submit(() -> executeOnProgramChange(programText));
     }
 
     private void executeOnProgramChange(String programText) {
