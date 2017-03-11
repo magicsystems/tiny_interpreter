@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 /**
  *  Main Editor's frame. Consists of two component: component for program text and for program output.
@@ -103,7 +104,8 @@ public class Editor extends JFrame {
                 } catch (BadLocationException e) {
                     e.printStackTrace();
                 }
-                newMapWithErrors.put(new Range(start, end), errorWithLine.getValue().get(0).getMessage());
+                newMapWithErrors.put(new Range(start, end), errorWithLine.getValue().stream()
+                        .map(error -> error.getMessage()).collect(Collectors.joining("<br>", "<html>", "</html>")));
                 start = text.indexOf("\n" + line + "\n", start + 1);
             }
         }

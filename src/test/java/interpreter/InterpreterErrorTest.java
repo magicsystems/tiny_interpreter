@@ -81,6 +81,16 @@ public class InterpreterErrorTest {
                 "Expression expected");
     }
 
+
+    private static final String MISSING_TWO_ARGS_PROGRAM =
+            "var c  = a + b";
+
+    @Test
+    public void testMissingTwoArgs() {
+        runProgramWithError(MISSING_TWO_ARGS_PROGRAM,
+                "Undefined variable 'a'", "Undefined variable 'b'");
+    }
+
     private static void runProgramWithError(String program, String... errors) {
         Interpreter interpreter = new Interpreter();
         Result result = interpreter.execute(program);
