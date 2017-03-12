@@ -9,7 +9,7 @@ public class NoOpSequenceExpression implements SequenceExpression {
 
     @Override
     public DoubleStream stream(Context context) {
-        return null;
+        return DoubleStream.empty();
     }
 
     @Override

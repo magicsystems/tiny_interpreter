@@ -16,8 +16,8 @@ public class BracketExpression implements NumberExpression {
     }
 
     @Override
-    public double lambdaValue(Object[] array) {
-        return expression.lambdaValue(array);
+    public double lambdaValue(Object[] context) {
+        return expression.lambdaValue(context);
     }
 
     @Override

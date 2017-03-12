@@ -16,10 +16,10 @@ public class Identifier implements NumberExpression {
     }
 
     @Override
-    public double lambdaValue(Object[] array) {
-        for (int i = 0; i < array.length; i += 2) {
-            if (array[i].equals(name)) {
-                return (Double) array[i + 1];
+    public double lambdaValue(Object[] context) {
+        for (int i = 0; i < context.length; i += 2) {
+            if (context[i].equals(name)) {
+                return (Double) context[i + 1];
             }
         }
         return 0;

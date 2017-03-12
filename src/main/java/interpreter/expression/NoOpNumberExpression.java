@@ -11,7 +11,7 @@ public class NoOpNumberExpression implements NumberExpression {
     }
 
     @Override
-    public double lambdaValue(Object[] array) {
+    public double lambdaValue(Object[] context) {
         return 0;
     }
 

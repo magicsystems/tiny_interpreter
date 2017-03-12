@@ -7,7 +7,11 @@ import interpreter.expression.Identifier;
 import static interpreter.Util.isValidIdentifier;
 import static interpreter.Util.keyword;
 
-
+/**
+ *  Parses strings to program identifiers - variables or lambda parameters.
+ *
+ *  Valid identifier consists of only literal chars.
+ */
 public class IdentifierParser {
 
     public Identifier parseLambdaParameter(String line, Context context) {

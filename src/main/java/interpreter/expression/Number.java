@@ -1,8 +1,10 @@
 package interpreter.expression;
 
-
 import interpreter.Context;
 
+/**
+ * Expression representation for double value
+ */
 public class Number implements NumberExpression {
     private final double value;
 
@@ -16,7 +18,7 @@ public class Number implements NumberExpression {
     }
 
     @Override
-    public double lambdaValue(Object[] array) {
+    public double lambdaValue(Object[] context) {
         return value;
     }
 
