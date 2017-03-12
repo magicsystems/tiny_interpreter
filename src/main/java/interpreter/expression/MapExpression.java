@@ -25,9 +25,6 @@ public class MapExpression implements SequenceExpression {
     public DoubleStream stream(Context context) {
         DoubleStream stream = this.sequence.stream(context);
         return stream.parallel().map(x -> {
-            if (Thread.currentThread().isInterrupted()) {
-                throw new RuntimeException("Map execution is interrupted");
-            }
             Object[] array = new Object[2];
             array[0] = identifier;
             array[1] = x;

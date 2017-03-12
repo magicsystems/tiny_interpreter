@@ -31,9 +31,6 @@ public class ReduceExpression implements NumberExpression {
         DoubleStream stream = sequence.stream(context);
         double identityValue = identity.value(context);
         return stream.parallel().reduce(identityValue, (x, y) -> {
-            if (Thread.currentThread().isInterrupted()) {
-                throw new RuntimeException("Reduce execution is interrupted");
-            }
             Object[] array = new Object[4];
             array[0] = firstIdentifier;
             array[1] = x;
