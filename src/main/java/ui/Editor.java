@@ -5,7 +5,7 @@ import org.fife.ui.rsyntaxtextarea.SquiggleUnderlineHighlightPainter;
 import ui.action.ExitAction;
 import ui.action.OpenAction;
 import ui.action.SaveAction;
-import ui.listener.ProgramTextKeyListener;
+import ui.listener.DocumentTextChangeListener;
 import interpreter.Interpreter;
 import interpreter.Result;
 import interpreter.error.ParserError;
@@ -66,6 +66,7 @@ public class Editor extends JFrame {
 
     public void onOpenAction(Reader reader) throws IOException {
         programTextComponent.read(reader, null);
+        programTextComponent.getDocument().addDocumentListener(new DocumentTextChangeListener(this));
         onProgramTextChanged();
     }
 
@@ -115,8 +116,8 @@ public class Editor extends JFrame {
         final JTextArea textArea = new JTextArea();
         textArea.setBorder(createBorder("Program"));
         textArea.setFont(new Font("Arial", Font.PLAIN, 14));
-        textArea.addKeyListener(new ProgramTextKeyListener(editor));
         textArea.addMouseMotionListener(new ProgramTextMouseMotionListener(editor));
+        textArea.getDocument().addDocumentListener(new DocumentTextChangeListener(editor));
         return textArea;
     }
 
