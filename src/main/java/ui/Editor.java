@@ -37,7 +37,7 @@ public class Editor extends JFrame {
     private final ExecutorService backgroundExecutor = Executors.newSingleThreadExecutor();
     private volatile Future<?> currentTask = null;
 
-    private volatile Map<Range, String> errorsMap = new HashMap<>();
+    private Map<Range, String> errorsMap = new HashMap<>();
 
     public Editor() {
         super("Tiny Interpreter");
@@ -82,8 +82,10 @@ public class Editor extends JFrame {
         Map<String, List<ParserError>> errors = result.getErrors();
         StringJoiner joiner = new StringJoiner("\n");
         result.getOutput().forEach(joiner::add);
-        errorsMap = processErrors(errors);
-        SwingUtilities.invokeLater(() -> programOutputTextComponent.setText(joiner.toString()));
+        SwingUtilities.invokeLater(() -> {
+            errorsMap = processErrors(errors);
+            programOutputTextComponent.setText(joiner.toString());
+        });
     }
 
     private HashMap<Range, String> processErrors(Map<String, List<ParserError>> errors) {
